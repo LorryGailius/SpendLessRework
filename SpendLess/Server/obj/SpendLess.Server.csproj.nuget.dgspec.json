@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Server\\SpendLess.Server.csproj": {}
+    "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Server\\SpendLess.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Client\\SpendLess.Client.csproj": {
+    "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Client\\SpendLess.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Client\\SpendLess.Client.csproj",
+        "projectUniqueName": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Client\\SpendLess.Client.csproj",
         "projectName": "SpendLess.Client",
-        "projectPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Client\\SpendLess.Client.csproj",
-        "packagesPath": "C:\\Users\\viliu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Client\\obj\\",
+        "projectPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Client\\SpendLess.Client.csproj",
+        "packagesPath": "C:\\Users\\Lorry\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\viliu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lorry\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -33,8 +33,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\SpendLess.Shared.csproj": {
-                "projectPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\SpendLess.Shared.csproj"
+              "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\SpendLess.Shared.csproj": {
+                "projectPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\SpendLess.Shared.csproj"
               }
             }
           }
@@ -109,7 +109,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-              "version": "[7.0.0, 7.0.0]"
+              "version": "[7.0.3, 7.0.3]"
             }
           ],
           "frameworkReferences": {
@@ -117,7 +117,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
@@ -126,20 +126,20 @@
         }
       }
     },
-    "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Server\\SpendLess.Server.csproj": {
+    "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Server\\SpendLess.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Server\\SpendLess.Server.csproj",
+        "projectUniqueName": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Server\\SpendLess.Server.csproj",
         "projectName": "SpendLess.Server",
-        "projectPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Server\\SpendLess.Server.csproj",
-        "packagesPath": "C:\\Users\\viliu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Server\\obj\\",
+        "projectPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Server\\SpendLess.Server.csproj",
+        "packagesPath": "C:\\Users\\Lorry\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\viliu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lorry\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -155,11 +155,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Client\\SpendLess.Client.csproj": {
-                "projectPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Client\\SpendLess.Client.csproj"
+              "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Client\\SpendLess.Client.csproj": {
+                "projectPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Client\\SpendLess.Client.csproj"
               },
-              "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\SpendLess.Shared.csproj": {
-                "projectPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\SpendLess.Shared.csproj"
+              "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\SpendLess.Shared.csproj": {
+                "projectPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\SpendLess.Shared.csproj"
               }
             }
           }
@@ -244,24 +244,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\SpendLess.Shared.csproj": {
+    "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\SpendLess.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\SpendLess.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\SpendLess.Shared.csproj",
         "projectName": "SpendLess.Shared",
-        "projectPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\SpendLess.Shared.csproj",
-        "packagesPath": "C:\\Users\\viliu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\viliu\\Documents\\GitHub\\SpendLess\\SpendLess\\Shared\\obj\\",
+        "projectPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\SpendLess.Shared.csproj",
+        "packagesPath": "C:\\Users\\Lorry\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lorry\\Documents\\Github\\SpendLessRework\\SpendLess\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\viliu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lorry\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -304,7 +304,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

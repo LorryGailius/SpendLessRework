@@ -22,107 +22,110 @@ namespace SpendLess.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SpendLess.Server.Models.Goal", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
-
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                b.Property<double>("Amount")
-                    .HasColumnType("float");
-
-                b.Property<string>("Name")
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<int>("UserId")
-                    .HasColumnType("int");
-
-                b.Property<DateTime>("endDate")
-                    .HasColumnType("datetime2");
-
-                b.HasKey("Id");
-
-                b.ToTable("Goals");
-            });
-
             modelBuilder.Entity("SpendLess.Server.Models.User", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                b.Property<string>("Email")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnType("varchar(50)");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
 
-                b.Property<int?>("InitialBalance")
-                    .HasColumnType("int");
+                    b.Property<int?>("InitialBalance")
+                        .HasColumnType("int");
 
-                b.Property<string>("Name")
-                    .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                b.Property<byte[]>("PasswordHash")
-                    .IsRequired()
-                    .HasMaxLength(64)
-                    .HasColumnType("binary(64)")
-                    .IsFixedLength();
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("binary(64)")
+                        .IsFixedLength();
 
-                b.Property<byte[]>("PasswordSalt")
-                    .IsRequired()
-                    .HasMaxLength(128)
-                    .HasColumnType("binary(128)")
-                    .IsFixedLength();
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("binary(128)")
+                        .IsFixedLength();
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.ToTable("Users");
-            });
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SpendLess.Shared.Goal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double?>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("CurrentAmount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Goals");
+                });
 
             modelBuilder.Entity("SpendLess.Shared.Transactions", b =>
-            {
-                b.Property<int?>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
-                b.Property<double?>("Amount")
-                    .HasColumnType("float");
+                    b.Property<double?>("Amount")
+                        .HasColumnType("float");
 
-                b.Property<string>("Category")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("Comment")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<DateTime?>("EndDate")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
 
-                b.Property<int>("Interval")
-                    .HasColumnType("int");
+                    b.Property<int>("Interval")
+                        .HasColumnType("int");
 
-                b.Property<string>("Period")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Period")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<DateTime>("TransactionDate")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
 
-                b.Property<int?>("UserId")
-                    .HasColumnType("int");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.ToTable("Transactions");
-            });
+                    b.ToTable("Transactions");
+                });
 #pragma warning restore 612, 618
         }
     }

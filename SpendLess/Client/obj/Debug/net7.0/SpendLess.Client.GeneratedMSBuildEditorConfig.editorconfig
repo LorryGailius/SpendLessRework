@@ -9,65 +9,53 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = SpendLess.Client
 build_property.RootNamespace = SpendLess.Client
-build_property.ProjectDir = C:\Users\viliu\Documents\GitHub\SpendLess\SpendLess\Client\
+build_property.ProjectDir = C:\Users\Lorry\Documents\Github\SpendLessRework\SpendLess\Client\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\viliu\Documents\GitHub\SpendLess\SpendLess\Client
+build_property.MSBuildProjectDirectory = C:\Users\Lorry\Documents\Github\SpendLessRework\SpendLess\Client
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/App.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Login1.razor]
-build_metadata.AdditionalFiles.TargetPath = TG9naW4xLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Pages/Goals.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Pages/Goals.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR29hbHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Pages/Index.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Pages/Login.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Pages/Profile.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Pages/Profile.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Pages/Register.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Pages/Stats.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Pages/Stats.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhdHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Pages/Transactions.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Pages/Transactions.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhbnNhY3Rpb25zLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Shared/LoginLogoutBtn.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Shared/LoginLogoutBtn.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luTG9nb3V0QnRuLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Shared/SurveyPrompt.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/_Imports.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Shared/MainLayout.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-nibqpwn2iz
 
-[C:/Users/viliu/Documents/GitHub/SpendLess/SpendLess/Client/Shared/NavMenu.razor]
+[C:/Users/Lorry/Documents/Github/SpendLessRework/SpendLess/Client/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-bswws9mbac

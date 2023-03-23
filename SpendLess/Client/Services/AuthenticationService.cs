@@ -78,7 +78,7 @@ namespace SpendLess.Client.Services
                 return "Email is required";
 
             }
-            if (!Regex.IsMatch(email, @"^([\w]+)@([\w]+)\.(((\w){2,3})+)$"))
+            if (!Regex.IsMatch(email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
                 return "Email format is incorrect";
             else
                 return null;

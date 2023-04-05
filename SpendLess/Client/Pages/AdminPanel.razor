@@ -1,0 +1,18 @@
+﻿@page "/admin"
+@using SpendLess.Client.Services
+@inject ITransactionService TransactionService
+@inject NavigationManager NavigationManager
+
+<h1>Admin Panel</h1>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        TransactionService.GetIsAdmin();
+        if(TransactionService.IsAdmin == false)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}

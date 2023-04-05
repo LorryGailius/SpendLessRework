@@ -10,7 +10,11 @@ namespace SpendLess.Client.Services
         public List<Transactions> Transactions { get; set; }
         public string UserName { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         event EventHandler<EventArgs>? TransactionsChanged;
+
+        event EventHandler<EventArgs>? PrivelagesChanged;
 
         public Task OnTransactionsChanged();
         Task GetTransactions(LogException logexception);
@@ -24,5 +28,7 @@ namespace SpendLess.Client.Services
         Task<string> DeleteTransaction(int id);
 
         Task GetUserName();
+
+        Task GetIsAdmin();
     }
 }

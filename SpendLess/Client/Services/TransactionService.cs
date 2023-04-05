@@ -15,10 +15,18 @@ namespace SpendLess.Client.Services
     {
 
         public event EventHandler<EventArgs>? TransactionsChanged;
+        public event EventHandler<EventArgs>? PrivelagesChanged;
+
         public async Task OnTransactionsChanged()
         {
             if (TransactionsChanged is not null)
                 TransactionsChanged.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task OnPrivelagesChanged()
+        {
+            if (PrivelagesChanged is not null)
+                PrivelagesChanged.Invoke(this, EventArgs.Empty);
         }
 
         public TransactionService(IHttpClientFactory clientFactory, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider, ISnackBarService snackBarService)
@@ -35,6 +43,8 @@ namespace SpendLess.Client.Services
         private readonly ILocalStorageService _localStorage;
         public List<SpendLess.Shared.Transactions> Transactions { get; set; } = new List<SpendLess.Shared.Transactions>();
         public string UserName { get; set; } = "Name not found";
+
+        public bool IsAdmin { get; set; } = false;
 
         public delegate void LogException(HttpClient client, string str, Exception ex);
 
@@ -387,5 +397,32 @@ namespace SpendLess.Client.Services
             }
         }
 
+        public async Task GetIsAdmin()
+        {
+            var client = _clientFactory.CreateClient();
+            try
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetUser");
+                string token = await _localStorage.GetItemAsStringAsync("token");
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
+
+                var response = await client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
+                if ((response.StatusCode) == HttpStatusCode.Unauthorized)
+                {
+                    await _authStateProvider.GetAuthenticationStateAsync();
+                    _snackBarService.ErrorMsg("Session has ended");
+                    IsAdmin = false;
+                }
+
+                var result = await response.Content.ReadFromJsonAsync<Server.Models.User>();
+                IsAdmin = (bool)result.IsAdmin;
+                OnPrivelagesChanged();
+            }
+            catch (Exception ex)
+            {
+                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
+            }
+        }
     }
 }

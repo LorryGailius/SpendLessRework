@@ -168,7 +168,8 @@
         if (await AuthService.ValidateLogin(success, email, username, password)){
             NavigationManager.NavigateTo("/");
             await TransactionService.GetTransactions();
-        }     
+            await TransactionService.GetIsAdmin();
+        }
     }
 
     private UserDto? user;

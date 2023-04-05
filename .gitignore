@@ -386,3 +386,64 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+*.userprefs
+*.usertasks
+*.user
+
+# Build results
+bin/
+obj/
+
+# Build cache
+**/bin/*
+**/obj/*
+
+# MSTest test Results
+[TestResult.xml|*.trx]
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# StyleCop
+StyleCopReport.xml
+
+# Files and directories created by Visual Studio
+Generated_Code/
+_ReSharper*/
+
+# NuGet Packages
+*.nupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# RIA/Silverlight projects
+Generated_Code/
+
+# Backup & report files from converting an old project file
+Backup*/ 
+UpgradeLog*.XML 
+_UpgradeReport_Files/
+
+# NPM / Yarn
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log*
+yarn.lock
+*.lock
+.pnp/
+
+# MudBlazor
+_MudBlazor*
+
+# Blazor WebAssembly
+bin/Debug/netstandard2.1/wwwroot/
+bin/Release/netstandard2.1/wwwroot/

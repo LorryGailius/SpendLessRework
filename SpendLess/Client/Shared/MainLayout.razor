@@ -16,16 +16,17 @@
     <MudDrawerContainer Class="mud-height-full">
         <MudDrawer Style="height: 100%;" @bind-Open="@open" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
             <MudNavMenu>
+                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Home" Href="/">Home</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Custom.Uncategorized.AlertSuccess" Href="/goals">Goals</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Payments" Href="/transactions">Transactions</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.BarChart" Href="/stats">Statistics</MudNavLink>
                 @if (TransactionService.IsAdmin)
                 {
                     <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AdminPanelSettings" Href="/admin">Admin Panel</MudNavLink>
                 }
                 else
-                {      
-                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Home" Href="/">Home</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Custom.Uncategorized.AlertSuccess" Href="/goals">Goals</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Payments" Href="/transactions">Transactions</MudNavLink>
-                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.BarChart" Href="/stats">Statistics</MudNavLink>
+                {
+
                     <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ContactSupport" Href="/support">Support</MudNavLink>
                 }
             </MudNavMenu>

@@ -1,0 +1,45 @@
+﻿@using SpendLess.Shared
+
+<MudDialog>
+    <DialogContent>
+        <MudText Style="text-align: center">@ContentText</MudText>
+        <MudCard Outlined="true" Style="width: 250px; min-height: auto; margin: 0 auto;">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText>@Ticket.Title</MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    @if (Ticket.Status == 0)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error"></MudIcon>
+                    }
+                    else if (Ticket.Status == 2)
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Pending" Color="Color.Warning"></MudIcon>
+                    }
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>@Ticket.Description</MudText>
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public String ContentText { get; set; }
+    [Parameter] public String ButtonText { get; set; }
+    [Parameter] public Color Color { get; set; }
+    [Parameter] public Ticket Ticket { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

@@ -18,6 +18,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IGoalService, GoalService>();
 builder.Services.AddScoped<ISnackBarService, SnackBarService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IPageService, PageService>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddHttpClient("API", c =>

@@ -5,22 +5,37 @@
 @inject ITransactionService TransactionService
 @inject NavigationManager NavigationManager
 
-<h3>TicketView</h3>
 
-<h2>Fetching Ticket with ID : @Id</h2>
+<div style ="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center;">
+    @if (ticket is not null)
+    {
+        <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, -50%); margin: 0 auto; min-width: 400px"></MudTextField>
+    }
+    else
+    {
+        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+    }
+</div>
 
 @code {
     [Parameter]
-    public int? Id { get; set; }
+    public int Id { get; set; }
 
     Ticket ticket;
 
-    protected override void OnInitialized()
+    public string TextValue { get; set; }
+
+    protected override async void OnInitialized()
     {
-        TransactionService.GetIsAdmin();
-        if (TransactionService.IsAdmin)
+        TicketService.TicketsChanged += ((source, args) => StateHasChanged());
+        if (!TransactionService.IsAdmin)
         {
             NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ticket = await TicketService.GetTicket(Id);
+            StateHasChanged();
         }
 
     }

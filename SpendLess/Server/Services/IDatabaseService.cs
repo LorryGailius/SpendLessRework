@@ -13,5 +13,6 @@ namespace SpendLess.Server.Services
         Task<User> GetUser(string email);
         Task<List<Transactions>> GetTransactionsAsync(int userId);
         Task RemoveTransaction(Transactions transaction);
+        Task<List<Ticket>> GetTicketAsync(int userId, bool userIsAdmin);
     }
 }

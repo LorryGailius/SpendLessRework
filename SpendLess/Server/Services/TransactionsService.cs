@@ -73,5 +73,14 @@ namespace SpendLess.Server.Services
 
             return user;
         }
+
+        public async Task<List<Ticket>> GetTickets(SpendLessContext _context, HttpContext _httpContext)
+        {
+            var user = await GetUser(_context, _httpContext);
+            var result = _databaseService.GetTicketAsync(user.Id, user.IsAdmin);
+            var tickets = result.Result;
+
+            return tickets;
+        }
     }
 }

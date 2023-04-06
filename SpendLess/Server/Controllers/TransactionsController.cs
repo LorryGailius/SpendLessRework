@@ -37,6 +37,10 @@ namespace SpendLess.Server.Controllers
         public async Task<ActionResult<List<Transactions>>> GetTransactions() =>
             await _service.GetTransactions(_context, HttpContext);
 
+        [HttpGet("GetTickets")]
+        public async Task<ActionResult<List<Ticket>>> GetTickets() =>
+            await _service.GetTickets(_context, HttpContext);
+
         [HttpPost("AddTransaction")]
         [LimitRequests(MaxRequests = 1, TimeWindow = 1)]
         public async Task<ActionResult<int?>> AddTransaction([FromBody] Transactions? transaction) =>

@@ -82,5 +82,23 @@ namespace SpendLess.Server.Services
             var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
             _context.Tickets.Remove(ticket);
         }
+
+        public async Task<List<Message>> GetMessagesAsync(int id)
+        {
+            return await _context.Messages.Where(m => m.ticketID == id).ToListAsync();
+        }
+
+        public async Task AddMessage(Message message, int id, int senderId)
+        {
+            message.ticketID = id;
+            message.senderID = senderId;
+            await _context.Messages.AddAsync(message);
+            // Change ticket status to in progress
+            var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+            ticket.Status = 2;
+            // Change description to message
+            ticket.Description = message.message;
+            _context.Tickets.Update(ticket);
+        }   
     }
 }

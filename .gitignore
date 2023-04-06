@@ -448,7 +448,9 @@ _MudBlazor*
 bin/Debug/netstandard2.1/wwwroot/
 bin/Release/netstandard2.1/wwwroot/
 
-Client/bin/
-Client/obj/
-Server/bin/
-Server/obj/
+Spendless/Client/bin/
+Spendless/Client/obj/
+Spendless/Server/bin/
+Spendless/Server/obj/
+Spendless/Shared/bin/
+Spendless/Shared/obj/

@@ -11,50 +11,52 @@
 <MudSnackbarProvider />
 
 
-<MudPaper Height="100vh" Style="overflow:hidden; position:relative;">
-    <MudDrawerContainer Class="mud-height-full">
-        <MudDrawer Style="height: 100%;" @bind-Open="@open" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
-            <MudNavMenu>
-                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Home" Href="/">Home</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Custom.Uncategorized.AlertSuccess" Href="/goals">Goals</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Payments" Href="/transactions">Transactions</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.BarChart" Href="/stats">Statistics</MudNavLink>
-                @if (TransactionService.IsAdmin)
-                {
-                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AdminPanelSettings" Href="/admin">Admin Panel</MudNavLink>
-                }
-                else
-                {
 
-                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ContactSupport" Href="/support">Support</MudNavLink>
-                }
-            </MudNavMenu>
-        </MudDrawer>
-        <AuthorizeView>
-            <Authorized>
-                <MudMenu Style="position:absolute; top:3%; right:3%;" FullWidth="false" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
-                    <ActivatorContent>
-                        <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary">
-                            @TransactionService.UserName
-                        </MudChip>
-                    </ActivatorContent>
-                    <ChildContent>
-                        <MudMenuItem @onclick = "NavToProfile"> Profile</MudMenuItem>
-                        <MudMenuItem @onclick = "Logout"> Logout </MudMenuItem>
+    <MudPaper Height="100vh" Style="overflow: hidden; position: relative;">
+        <MudDrawerContainer Class="mud-height-full">
 
-                    </ChildContent>
-                </MudMenu>
-            </Authorized>
-        </AuthorizeView>
+        @if (TransactionService.UserName != "Name not found")
+        {
+            <MudDrawer Style="height: 100%;" @bind-Open="@open" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+                <MudNavMenu>
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Home" Href="/">Home</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Custom.Uncategorized.AlertSuccess" Href="/goals">Goals</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.Payments" Href="/transactions">Transactions</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Filled.BarChart" Href="/stats">Statistics</MudNavLink>
+                    @if (TransactionService.IsAdmin)
+                    {
+                        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AdminPanelSettings" Href="/admin">Admin Panel</MudNavLink>
+                    }
+                    else
+                    {
 
+                        <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ContactSupport" Href="/support">Support</MudNavLink>
+                    }
+                </MudNavMenu>
+            </MudDrawer>
+            <AuthorizeView>
+                <Authorized>
+                    <MudMenu Style="position: absolute; top: 3%; right: 3%; z-index: 5" FullWidth="false" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight">
+                        <ActivatorContent>
+                            <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary">
+                                @TransactionService.UserName
+                            </MudChip>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudMenuItem @onclick ="NavToProfile"> Profile</MudMenuItem>
+                            <MudMenuItem @onclick ="Logout"> Logout </MudMenuItem>
+                        </ChildContent>
+                    </MudMenu>
+                </Authorized>
+            </AuthorizeView>
+        }
 
-        <div class="d-flex justify-center align-center mud-height-full">
-            @Body
-        </div>
+            <div class="d-flex justify-center align-center mud-height-full">
+                @Body
+            </div>
 
-    </MudDrawerContainer>
-</MudPaper>
-
+        </MudDrawerContainer>
+    </MudPaper>
 
 
 @code

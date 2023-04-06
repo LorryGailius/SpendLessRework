@@ -38,7 +38,7 @@
                                 </CardHeaderActions>
                             </MudCardHeader>
                             <MudCardContent>
-                                <MudText>@ticket.Description</MudText>
+                                <MudText Style="overflow: hidden">@ticket.Description</MudText>
                             </MudCardContent>
                             <MudCardActions Style="display: flex; justify-content: space-between">
                                 <MudButton Color="Color.Info" Variant="Variant.Filled"
@@ -86,7 +86,7 @@
 
         parameters.Add("ContentText","Do you really want to resolve the ticket:");
         parameters.Add("ButtonText", "Resolve");
-        parameters.Add("Color", Color.Error);
+        parameters.Add("Color", Color.Success);
         parameters.Add("Ticket", sendTicket);
 
         DialogService.Show<TicketDialog>("Are you sure?", parameters, options);

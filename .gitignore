@@ -447,3 +447,8 @@ _MudBlazor*
 # Blazor WebAssembly
 bin/Debug/netstandard2.1/wwwroot/
 bin/Release/netstandard2.1/wwwroot/
+
+Client/bin/
+Client/obj/
+Server/bin/
+Server/obj/

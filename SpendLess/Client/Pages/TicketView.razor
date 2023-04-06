@@ -1,0 +1,22 @@
+﻿@page "/ticket/{Id:int}"
+@using SpendLess.Shared
+@using Newtonsoft.Json
+
+<h3>TicketView</h3>
+
+<h2>Fetching Ticket with ID : @Id</h2>
+
+
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    Ticket ticket;
+
+    protected override void OnInitialized()
+    {
+         
+    }
+}

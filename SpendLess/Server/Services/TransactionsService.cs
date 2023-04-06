@@ -110,5 +110,12 @@ namespace SpendLess.Server.Services
             await _databaseService.SaveChangesAsync();
             return true;
         }
+
+        public async Task<List<Message>> GetMessages(int id, SpendLessContext _context, HttpContext _httpContext)
+        {
+            var result = _databaseService.GetMessagesAsync(id);
+            var messages = result.Result;
+            return messages;
+        }
     }
 }

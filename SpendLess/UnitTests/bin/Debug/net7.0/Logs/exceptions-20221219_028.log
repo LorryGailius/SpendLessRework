@@ -1,3 +1,0 @@
-2022-12-19 00:44:26.090 +02:00 [ERR] 
-Exception message: Object reference not set to an instance of an object.
-Exception stack trace:    at SpendLess.Server.Services.ExceptionService.LogException(Exception ex, ClaimsPrincipal identity) in C:\Users\viliu\Documents\GitHub\SpendLess\SpendLess\Server\Services\ExceptionService.cs:line 15

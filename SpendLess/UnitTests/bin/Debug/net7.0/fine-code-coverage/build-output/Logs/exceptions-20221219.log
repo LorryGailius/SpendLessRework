@@ -1,5 +1,0 @@
-2022-12-19 15:34:29.528 +02:00 [ERR] CLIENT SIDE ERROR
-User's email: email
-Token exp.: date
-Message:Exception of type 'System.Exception' was thrown.
-Stack trace: 

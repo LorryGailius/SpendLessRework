@@ -1,6 +1,4 @@
-﻿using Autofac.Extras.DynamicProxy;
-using Microsoft.AspNetCore.Mvc;
-using SpendLess.Server.Interceptor;
+﻿using Microsoft.AspNetCore.Mvc;
 using SpendLess.Server.Services;
 using SpendLess.Shared;
 

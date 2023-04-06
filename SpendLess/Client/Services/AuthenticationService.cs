@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
-using Serilog;
-using SpendLess.Server.Models;
+﻿using Newtonsoft.Json;
 using SpendLess.Shared;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
-using System.Transactions;
-using System.Web;
- 
+
 
 namespace SpendLess.Client.Services
 {

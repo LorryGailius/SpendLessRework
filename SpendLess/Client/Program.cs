@@ -2,8 +2,6 @@ global using Blazored.LocalStorage;
 global using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
 using SpendLess.Client;
 using SpendLess.Client.Services;

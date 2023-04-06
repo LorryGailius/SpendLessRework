@@ -1,13 +1,13 @@
 ﻿@page "/ticket/{Id:int}"
 @using SpendLess.Shared
-@using Newtonsoft.Json
+@using SpendLess.Client.Services
+@inject ITicketService TicketService
+@inject ITransactionService TransactionService
+@inject NavigationManager NavigationManager
 
 <h3>TicketView</h3>
 
 <h2>Fetching Ticket with ID : @Id</h2>
-
-
-
 
 @code {
     [Parameter]
@@ -17,6 +17,11 @@
 
     protected override void OnInitialized()
     {
-         
+        TransactionService.GetIsAdmin();
+        if (TransactionService.IsAdmin)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+
     }
 }

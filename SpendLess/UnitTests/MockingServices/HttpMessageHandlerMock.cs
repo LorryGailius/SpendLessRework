@@ -1,13 +1,5 @@
-﻿using MudBlazor;
-using Newtonsoft.Json;
-using SpendLess.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using Newtonsoft.Json;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SpendLess.UnitTests.MockingServices
 {

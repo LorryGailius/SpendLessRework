@@ -10,9 +10,7 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using SpendLess.Server.Interceptor;
-using SpendLess.Client.Services;
 using SpendLess.Server.Controllers;
-using Castle.DynamicProxy;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<UnhandledExceptionLogger>();

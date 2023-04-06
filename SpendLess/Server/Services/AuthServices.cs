@@ -1,8 +1,4 @@
-﻿using Autofac.Core;
-using Autofac.Extras.DynamicProxy;
-using Azure.Core;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Autofac.Extras.DynamicProxy;
 using Microsoft.IdentityModel.Tokens;
 using SpendLess.Server.Interceptor;
 using SpendLess.Shared;

@@ -1,5 +1,4 @@
-﻿using SpendLess.Server.Interceptor;
-using SpendLess.Shared;
+﻿using SpendLess.Shared;
 namespace SpendLess.Server.Services
 {
     public interface IAuthServices

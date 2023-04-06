@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SpendLess.Shared;
+﻿namespace SpendLess.Shared;
 
 public class Message
 {

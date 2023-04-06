@@ -1,11 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Net;
-using SpendLess.Client.Pages;
 using System.Text.Json;
 using SpendLess.Shared;
-using System.Net.Http;
-using MudBlazor;
 
 
 namespace SpendLess.Client.Services

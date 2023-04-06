@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace SpendLess.Client.Services
+﻿namespace SpendLess.Client.Services
 {
     public class PageService : IPageService
     {

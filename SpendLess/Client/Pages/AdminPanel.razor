@@ -1,18 +1,98 @@
 ﻿@page "/admin"
 @using SpendLess.Client.Services
+@using System.Diagnostics
+@using System.Text.Json
+@using SpendLess.Shared
 @inject ITransactionService TransactionService
 @inject NavigationManager NavigationManager
+@inject ITicketService TicketService
+@inject IDialogService DialogService
 
-<h1>Admin Panel</h1>
+
+@*Print all tickets with status code 0*@
+@*If status code is 0, then the ticket is not yet resolved*@
+@*If status code is 1, then the ticket is resolved*@
+@*If status code is 2, then the ticket is opened*@
+
+<div style="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center">
+
+    <MudGrid Spacing="2" Style="Margin: 0;">
+        @{
+            if (TicketService.Tickets is not null)
+            {
+                foreach (var ticket in TicketService.Tickets)
+                {
+                    <MudItem Style="height: 250px;">
+                        <MudCard Outlined="true" Style="width: 400px;">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText>@ticket.Title</MudText>
+                                </CardHeaderContent>
+                                <CardHeaderActions>
+                                    @if (ticket.Status == 0)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error"></MudIcon>
+                                    }
+                                    else if (ticket.Status == 2)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.Pending" Color="Color.Warning"></MudIcon>
+                                    }
+                                </CardHeaderActions>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudText>@ticket.Description</MudText>
+                            </MudCardContent>
+                            <MudCardActions Style="display: flex; justify-content: space-between">
+                                <MudButton Color="Color.Info" Variant="Variant.Filled"
+                                           OnClick="@(() => { NavigationManager.NavigateTo($"/ticket/{ticket.Id}"); })">Check
+                                </MudButton>
+
+                                <MudButton Color="Color.Success" Variant="Variant.Filled"
+                                           OnClick= "@(() => showDialog(ticket))">Resolve
+                                </MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+                }
+            }
+            else
+            {
+                <h1>No more tickets to show</h1>
+            }
+        }
+    </MudGrid>
+</div>
+
 
 @code {
 
     protected override void OnInitialized()
     {
+        TicketService.TicketsChanged += ((source, args) => StateHasChanged());
         TransactionService.GetIsAdmin();
         if(TransactionService.IsAdmin == false)
         {
             NavigationManager.NavigateTo("/");
         }
+        else
+        {
+            TicketService.GetTickets();
+        }
     }
+
+    private void showDialog(Ticket sendTicket)
+    {
+        var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+        var parameters = new DialogParameters();
+
+        parameters.Add("ContentText","Do you really want to resolve the ticket:");
+        parameters.Add("ButtonText", "Resolve");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Ticket", sendTicket);
+
+        DialogService.Show<TicketDialog>("Are you sure?", parameters, options);
+    }
+
+
 }

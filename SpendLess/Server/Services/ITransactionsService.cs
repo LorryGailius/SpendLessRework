@@ -1,5 +1,4 @@
 ﻿using SpendLess.Shared;
-using System.Security.Claims;
 
 namespace SpendLess.Server.Services
 {
@@ -11,5 +10,8 @@ namespace SpendLess.Server.Services
         Task<bool> DeleteTransaction(int id, SpendLessContext _context);
         Task<User> GetUser(SpendLessContext _context, HttpContext _httpContext);
         Task<List<Ticket>> GetTickets(SpendLessContext _context, HttpContext _httpContext);
+        Task<Ticket> GetTicket(int id, SpendLessContext _context, HttpContext _httpContext);
+        Task<int?> AddTicket(Ticket? ticket, SpendLessContext _context, HttpContext _httpContext);
+        Task<bool> DeleteTicket(int id, SpendLessContext _context);
     }
 }

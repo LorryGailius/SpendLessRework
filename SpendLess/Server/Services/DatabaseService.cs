@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using SpendLess.Server.Models;
 using SpendLess.Shared;
-using System.Runtime.CompilerServices;
 
 namespace SpendLess.Server.Services
 {
@@ -57,7 +55,7 @@ namespace SpendLess.Server.Services
             if (userIsAdmin)
             {
                 Debug.WriteLine("User is admin");
-                //Return tickets with status code 0
+                //Return tickets with status code 0 or in progress my specific admin
                 return await _context.Tickets.Where(t => t.Status == 0 || (t.Status == 2 && t.UserId == userId)).ToListAsync();
             }
 
@@ -65,6 +63,24 @@ namespace SpendLess.Server.Services
             //Return tickets of the user
             return await _context.Tickets.Where(t => t.UserId == userId).ToListAsync();
         }
-        
+
+        public async Task<Ticket> GetTicketAsync(int id)
+        {
+            // Return ticket based on id
+            return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public async Task AddTicket(Ticket ticket)
+        {
+            // Add ticket to database
+            await _context.Tickets.AddAsync(ticket);
+        }
+
+        public async Task RemoveTicket(int id)
+        {
+            //Remove ticket from database
+            var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+            _context.Tickets.Remove(ticket);
+        }
     }
 }

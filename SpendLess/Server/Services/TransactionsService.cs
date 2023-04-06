@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpendLess.Server.Models;
-using SpendLess.Shared;
+﻿using SpendLess.Shared;
 using System.Security.Claims;
 
 namespace SpendLess.Server.Services
@@ -81,6 +78,37 @@ namespace SpendLess.Server.Services
             var tickets = result.Result;
 
             return tickets;
+        }
+
+        public async Task<Ticket> GetTicket(int id, SpendLessContext _context, HttpContext _httpContext)
+        {
+            var result = _databaseService.GetTicketAsync(id);
+            var ticket = result.Result;
+
+            return ticket;
+        }
+
+        public async Task<int?> AddTicket(Ticket? ticket, SpendLessContext _context, HttpContext _httpContext)
+        {
+            var user = GetUser(_context, _httpContext);
+            ticket.UserId = user.Id;
+
+            _databaseService.AddTicket(ticket);
+            _databaseService.SaveChangesAsync();
+
+            return ticket.Id;
+        }
+
+        public async Task<bool> DeleteTicket(int id, SpendLessContext _context)
+        {
+            if (id < 0)
+            {
+                return false;
+            }
+
+            _databaseService.RemoveTicket(id);
+            await _databaseService.SaveChangesAsync();
+            return true;
         }
     }
 }

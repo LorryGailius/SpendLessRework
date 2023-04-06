@@ -1,21 +1,8 @@
-﻿
-
-using Azure.Core;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Autofac.Extras.DynamicProxy;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SpendLess.Server.Interceptor;
 using SpendLess.Server.Middleware.Decorators;
 using SpendLess.Shared;
 using SpendLess.Server.Services;
-using System.Security.Claims;
-using System.Text.Json;
-using Autofac.Core;
 
 namespace SpendLess.Server.Controllers
 {
@@ -37,10 +24,6 @@ namespace SpendLess.Server.Controllers
         public async Task<ActionResult<List<Transactions>>> GetTransactions() =>
             await _service.GetTransactions(_context, HttpContext);
 
-        [HttpGet("GetTickets")]
-        public async Task<ActionResult<List<Ticket>>> GetTickets() =>
-            await _service.GetTickets(_context, HttpContext);
-
         [HttpPost("AddTransaction")]
         [LimitRequests(MaxRequests = 1, TimeWindow = 1)]
         public async Task<ActionResult<int?>> AddTransaction([FromBody] Transactions? transaction) =>
@@ -59,5 +42,20 @@ namespace SpendLess.Server.Controllers
         public async Task<ActionResult<User>> GetUser() =>
             await _service.GetUser(_context, HttpContext);
 
+        [HttpGet("GetTickets")]
+        public async Task<ActionResult<List<Ticket>>> GetTickets() =>
+            await _service.GetTickets(_context, HttpContext);
+
+        [HttpGet("GetTicket/{id}")]
+        public async Task<ActionResult<Ticket>> GetTicket(int id) =>
+            await _service.GetTicket(id, _context, HttpContext);
+
+        [HttpPost("AddTicket")]
+        public async Task<ActionResult<int?>> AddTicket([FromBody] Ticket? ticket) =>
+            await _service.AddTicket(ticket, _context, HttpContext);
+
+        [HttpDelete("DeleteTicket/{id}")]
+        public async Task DeleteTicket(int id) =>
+            await _service.DeleteTicket(id, _context);
     }
 }

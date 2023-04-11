@@ -1,0 +1,38 @@
+﻿@page "/support"
+@using SpendLess.Client.Services
+@using SpendLess.Shared
+@inject ITransactionService TransactionService
+@inject NavigationManager NavigationManager
+@inject ITicketService TicketService
+
+
+<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 1rem 0;">
+    @if (TicketService.Tickets is not null)
+    {
+        @foreach (Ticket ticket in TicketService.Tickets)
+        {
+            <MudCard @ondblclick="@(() => { NavigationManager.NavigateTo($"/ticket/{ticket.Id}"); })" Style="max-height: 100px; margin: 0 12rem 0.25rem 12rem">
+
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Style="user-select: none;">@ticket.Title</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+
+                <MudCardContent>
+                    <MudText Style="overflow: hidden; user-select: none;">@ticket.Description</MudText>
+                </MudCardContent>
+
+            </MudCard>
+        }
+    }
+</div>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        TicketService.TicketsChanged += ((source, args) => StateHasChanged());
+        TicketService.GetTickets();
+    }
+}

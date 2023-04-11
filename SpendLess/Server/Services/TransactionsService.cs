@@ -82,7 +82,8 @@ namespace SpendLess.Server.Services
 
         public async Task<Ticket> GetTicket(int id, SpendLessContext _context, HttpContext _httpContext)
         {
-            var result = _databaseService.GetTicketAsync(id);
+            var user = await GetUser(_context, _httpContext);
+            var result = _databaseService.GetTicketAsync(id, user.Id, user.IsAdmin);
             var ticket = result.Result;
 
             return ticket;

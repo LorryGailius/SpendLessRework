@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpendLess.Shared;
 
@@ -49,6 +52,7 @@ namespace SpendLess.Server.Services
             _context.Transactions.Remove(transaction);
         }
 
+        // Get all tickets
         public async Task<List<Ticket>> GetTicketAsync(int userId, bool userIsAdmin)
         {
             //Check if user is admin
@@ -63,10 +67,18 @@ namespace SpendLess.Server.Services
             return await _context.Tickets.Where(t => t.UserId == userId).ToListAsync();
         }
 
-        public async Task<Ticket> GetTicketAsync(int id)
+        // Get ticket by id
+        public async Task<Ticket> GetTicketAsync(int id, int userId, bool userIsAdmin)
         {
-            // Return ticket based on id
-            return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+            var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+            if (userIsAdmin || ticket.UserId == userId)
+            {
+                return ticket;
+
+            }
+            
+            // return forbidden
+            throw new Exception("Forbidden");
         }
 
         public async Task AddTicket(Ticket ticket)

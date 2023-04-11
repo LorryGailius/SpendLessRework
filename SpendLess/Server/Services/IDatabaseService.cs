@@ -14,7 +14,7 @@ namespace SpendLess.Server.Services
         Task<List<Transactions>> GetTransactionsAsync(int userId);
         Task RemoveTransaction(Transactions transaction);
         Task<List<Ticket>> GetTicketAsync(int userId, bool userIsAdmin);
-        Task<Ticket> GetTicketAsync(int id);
+        Task<Ticket> GetTicketAsync(int id, int userId, bool userIsAdmin);
         Task AddTicket(Ticket ticket);
         Task RemoveTicket(int id);
         Task<List<Message>> GetMessagesAsync(int id);

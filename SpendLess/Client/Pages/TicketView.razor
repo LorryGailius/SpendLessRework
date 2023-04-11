@@ -13,7 +13,7 @@
     }
     else
     {
-        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" Style="position: absolute; top: 50%; bottom: 50%; left: 50%; right: 50%" />
     }
 </div>
 
@@ -28,15 +28,7 @@
     protected override async void OnInitialized()
     {
         TicketService.TicketsChanged += ((source, args) => StateHasChanged());
-        if (!TransactionService.IsAdmin)
-        {
-            NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            ticket = await TicketService.GetTicket(Id);
-            StateHasChanged();
-        }
-
+        ticket = await TicketService.GetTicket(Id);
+        StateHasChanged();
     }
 }

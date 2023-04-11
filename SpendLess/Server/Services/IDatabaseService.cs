@@ -18,6 +18,6 @@ namespace SpendLess.Server.Services
         Task AddTicket(Ticket ticket);
         Task RemoveTicket(int id);
         Task<List<Message>> GetMessagesAsync(int id);
-        Task AddMessage(Message message, int id, int senderId);
+        Task AddMessage(String message, int id, int senderId);
     }
 }

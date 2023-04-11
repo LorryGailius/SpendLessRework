@@ -1,15 +1,24 @@
 ﻿@page "/ticket/{Id:int}"
 @using SpendLess.Shared
 @using SpendLess.Client.Services
+@using Microsoft.AspNetCore.SignalR.Client
 @inject ITicketService TicketService
 @inject ITransactionService TransactionService
-@inject NavigationManager NavigationManager
-
+@inject NavigationManager NavigationManagers
+@implements IAsyncDisposable
 
 <div style ="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center;">
     @if (ticket is not null)
     {
-        <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, -50%); margin: 0 auto; min-width: 400px"></MudTextField>
+            @foreach (var message in messages)
+            {
+                <h6>@message</h6>
+            }
+
+        <div style="position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, -50%); margin: 0 auto; display: flex;">
+            <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="min-width: 400px"></MudTextField>
+            <MudButton @onclick="SendMessage">Send</MudButton>
+        </div>
     }
     else
     {
@@ -23,12 +32,57 @@
 
     Ticket ticket;
 
+    HubConnection hubConnection;
+
+    List<String> messages = new List<string>();
+
     public string TextValue { get; set; }
 
     protected override async void OnInitialized()
     {
         TicketService.TicketsChanged += ((source, args) => StateHasChanged());
         ticket = await TicketService.GetTicket(Id);
+
         StateHasChanged();
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:7290/supporthub")
+            .Build();
+
+        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        {
+            var encodedMsg = $"{user}: {message}";
+            messages.Add(encodedMsg);
+            Console.WriteLine(encodedMsg);
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task SendMessage()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.SendAsync("SendMessage", TransactionService.UserId, TextValue);
+            TextValue = string.Empty;
+        }
+        else
+        {
+            Console.WriteLine("Hub connection is null");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+
 }

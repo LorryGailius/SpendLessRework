@@ -63,7 +63,7 @@ namespace SpendLess.Server.Services
 
         public async Task<User> GetUser(SpendLessContext _context, HttpContext _httpContext)
         {
-            var identity = _httpContext.User.Identity as ClaimsIdentity;
+            var identity = _httpContext.User.Identity as ClaimsIdentity;    
             var userClaims = identity.Claims;
             string email = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value;
             var user = await _databaseService.GetUser(email);

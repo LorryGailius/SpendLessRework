@@ -41,9 +41,9 @@ namespace SpendLess.Client.Services
 
         public bool IsAdmin { get; set; } = false;
 
+        public int UserId { get; set; }
+
         public delegate void LogException(HttpClient client, string str, Exception ex);
-
-
 
         public async Task<bool> Savelist(double? amount, bool toggleExpenseIncome, string? textValue, string? categoryValue, DateTime? date, bool togglePeriodical, int interval, string period, DateTime? endDate)
         {
@@ -383,7 +383,7 @@ namespace SpendLess.Client.Services
 
                 var result = await response.Content.ReadFromJsonAsync<Server.Models.User>();
                 UserName = result.Name;
-                
+                UserId = result.Id;
             }
             catch (Exception ex)
             {

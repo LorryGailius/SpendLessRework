@@ -9,10 +9,12 @@ using SpendLess.Server.Extensions;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
+using Microsoft.AspNetCore.ResponseCompression;
 using SpendLess.Server.Interceptor;
 using SpendLess.Server.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddScoped<UnhandledExceptionLogger>();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
@@ -46,6 +48,11 @@ builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 builder.Services.AddSignalR();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        new[] { "application/octet-stream" });
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -62,6 +69,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -93,11 +103,7 @@ app.UseAuthorization();
 app.MapBlazorHub();
 app.UseRateLimiting();
 app.MapControllers();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<SupportHub>("/supporthub");
-});
+app.MapHub<SupportHub>("/supporthub");
 
 
 

@@ -84,6 +84,7 @@ namespace SpendLess.Server.Services
         public async Task AddTicket(Ticket ticket)
         {
             // Add ticket to database
+            await _context.Messages.AddAsync(new Message { ticketID = ticket.Id, senderID = ticket.UserId, message = ticket.Description });
             await _context.Tickets.AddAsync(ticket);
         }
 
@@ -99,16 +100,17 @@ namespace SpendLess.Server.Services
             return await _context.Messages.Where(m => m.ticketID == id).ToListAsync();
         }
 
-        public async Task AddMessage(Message message, int id, int senderId)
+        public async Task AddMessage(String message, int id, int senderId)
         {
-            message.ticketID = id;
-            message.senderID = senderId;
-            await _context.Messages.AddAsync(message);
+            Message temp = new Message();
+            temp.ticketID = id;
+            temp.senderID = senderId;
+            await _context.Messages.AddAsync(temp);
             // Change ticket status to in progress
             var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
             ticket.Status = 2;
             // Change description to message
-            ticket.Description = message.message;
+            ticket.Description = temp.message;
             _context.Tickets.Update(ticket);
         }   
     }

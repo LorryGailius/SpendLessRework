@@ -15,6 +15,7 @@ namespace SpendLess.Client.Services
         event EventHandler<EventArgs>? TransactionsChanged;
 
         event EventHandler<EventArgs>? PrivelagesChanged;
+        public int UserId { get; set; }
 
         public Task OnTransactionsChanged();
         Task GetTransactions(LogException logexception);

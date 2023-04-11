@@ -45,6 +45,7 @@ builder.Services.AddDbContext<SpendLessContext>();
 builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
+builder.Services.AddSignalR();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -81,7 +82,7 @@ app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
-//app.UseRouting();
+app.UseRouting();
 
 
 app.MapRazorPages();
@@ -92,11 +93,13 @@ app.UseAuthorization();
 app.MapBlazorHub();
 app.UseRateLimiting();
 app.MapControllers();
-/*app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
 
-});*/
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<SupportHub>("/supporthub");
+});
+
+
 
 app.MapFallbackToFile("index.html");
 app.Run();

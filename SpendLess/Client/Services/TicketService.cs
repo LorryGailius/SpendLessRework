@@ -107,9 +107,9 @@ namespace SpendLess.Client.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    _snackBarService.SuccessMsg("Transaction was successfully deleted");
+                    _snackBarService.SuccessMsg("Transaction was successfully resolved");
                     Tickets.Remove(ticket);
-                    await this.OnTicketsChanged();
+
                 }
             }
             catch (Exception ex)
@@ -117,7 +117,7 @@ namespace SpendLess.Client.Services
                 await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
                 throw;
             }
-            Console.WriteLine("Updating tickets");
+            await this.OnTicketsChanged();
         }
 
         public TicketService(IHttpClientFactory clientFactory, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider, ISnackBarService snackBarService)

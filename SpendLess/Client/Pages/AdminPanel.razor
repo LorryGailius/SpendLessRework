@@ -64,17 +64,17 @@
 
 @code {
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
         TicketService.TicketsChanged += ((source, args) => StateHasChanged());
-        TransactionService.GetIsAdmin();
+        await TransactionService.GetIsAdmin();
         if(TransactionService.IsAdmin == false)
         {
             NavigationManager.NavigateTo("/");
         }
         else
         {
-            TicketService.GetTickets();
+            await TicketService.GetTickets();
         }
     }
 

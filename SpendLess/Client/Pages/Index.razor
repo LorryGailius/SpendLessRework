@@ -132,5 +132,6 @@ else
         TransactionService.TransactionsChanged += ((source, args) => StateHasChanged());
         TransactionService.TransactionsChanged += ((source, args) => OnParametersSetAsync());
         TransactionService.GetUserName();
+        TransactionService.GetIsAdmin();
     }
 }

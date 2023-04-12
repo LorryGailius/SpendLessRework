@@ -108,7 +108,7 @@ namespace SpendLess.Server.Services
         }
 
 
-        private async Task<bool> VerifyEmail(string email)
+        public async Task<bool> VerifyEmail(string email)
         {
                 var smth = await _databaseService.FindEmail(email);
                 return smth;

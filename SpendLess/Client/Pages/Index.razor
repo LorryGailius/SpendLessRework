@@ -3,74 +3,86 @@
 @inject ITransactionService TransactionService
 
 @attribute [Authorize]
-<div style="height:100%; width:100%; overflow: auto; display: flex; justify-content: center" id="unique_id_scroll_section" class="ma-0">
-    <div style="width: 80%; heigth: 70%;">
-        <br>
-        <br>
-        <h3>Welcome, @TransactionService.UserName</h3>
-        <br>
-        <br>
-        <MudGrid Class="xs=1">
-            <MudItem xs="12" sm="6">
-                <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
-                    <div>
-						<h2><center>Overview</center></h2>
-                        <br>
-                        <h3>Balance @GetBalance()</h3>
-                    </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" sm="6">
-                <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
-                    <div>
-                        <h2><center>This month spendings</center></h2>
-                        <MudChart Class="align-self-center py-4 flex-1" ChartType="MudBlazor.ChartType.Donut" Width="100%" Height="200px" InputData="@(ExpensesList.ToArray())" InputLabels="@(CategoriesList.ToArray())">
-                            <CustomGraphics>
-                                <text class="donut-inner-text" x="47%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="2">Total</text>
-                                <text class="donut-inner-text" x="47%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="5">@Math.Round(ExpensesList.Sum(), 2)</text>
-                            </CustomGraphics>
-                        </MudChart>
-                    </div>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12">
-                <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
-                    <div style= "width:100%">
-					    <h2><center>Today's transactions</center></h2>
-                        <MudSimpleTable Dense="false" Hover="true" Bordered="false" Striped="false" Style="overflow-x: auto;">
-                            <tbody>
-                                @{
-                                    if (TransactionService.Transactions is not null)
-                                    {
-                                        List<SpendLess.Shared.Transactions> filteredTransactions = TransactionService.Transactions;
-                                        filteredTransactions = filteredTransactions.Where(x => x.TransactionDate <= DateTime.Today).ToList();
 
-                                        filteredTransactions = filteredTransactions.Where(x => x.TransactionDate >= DateTime.Today).ToList();
-
-
-                                        if (filteredTransactions != null)
+@if (TransactionService.UserName != "Name not found")
+{
+    <div style="height:100%; width:100%; overflow: auto; display: flex; justify-content: center" id="unique_id_scroll_section" class="ma-0">
+        <div style="width: 80%; heigth: 70%;">
+            <br>
+            <br>
+            <h3>Welcome, @TransactionService.UserName</h3>
+            <br>
+            <br>
+            <MudGrid Class="xs=1">
+                <MudItem xs="12" sm="6">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                        <div>
+                            <h2><center>Overview</center></h2>
+                            <br>
+                            <h3>Balance @GetBalance()</h3>
+                        </div>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                        <div>
+                            <h2><center>This month spendings</center></h2>
+                            <MudChart Class="align-self-center py-4 flex-1" ChartType="MudBlazor.ChartType.Donut" Width="100%" Height="200px" InputData="@(ExpensesList.ToArray())" InputLabels="@(CategoriesList.ToArray())">
+                                <CustomGraphics>
+                                    <text class="donut-inner-text" x="47%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="2">Total</text>
+                                    <text class="donut-inner-text" x="47%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="5">@Math.Round(ExpensesList.Sum(), 2)</text>
+                                </CustomGraphics>
+                            </MudChart>
+                        </div>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                        <div style="width:100%">
+                            <h2><center>Today's transactions</center></h2>
+                            <MudSimpleTable Dense="false" Hover="true" Bordered="false" Striped="false" Style="overflow-x: auto;">
+                                <tbody>
+                                    @{
+                                        if (TransactionService.Transactions is not null)
                                         {
-                                            for (int i = 0; i < filteredTransactions.Count; i++)
-                                            {
-                                                int id = filteredTransactions.ElementAt(i).Id ?? 0;
-                                                <tr>
-                                                    <td>@filteredTransactions.ElementAt(i).Comment</td>
-                                                    <td>@((filteredTransactions.ElementAt(i).Category))</td>
-                                                    <td>@filteredTransactions.ElementAt(i).Amount</td>
-                                                </tr>
-                                            }
+                                            List<SpendLess.Shared.Transactions> filteredTransactions = TransactionService.Transactions;
+                                            filteredTransactions = filteredTransactions.Where(x => x.TransactionDate <= DateTime.Today).ToList();
 
+                                            filteredTransactions = filteredTransactions.Where(x => x.TransactionDate >= DateTime.Today).ToList();
+
+
+                                            if (filteredTransactions != null)
+                                            {
+                                                for (int i = 0; i < filteredTransactions.Count; i++)
+                                                {
+                                                    int id = filteredTransactions.ElementAt(i).Id ?? 0;
+                                                    <tr>
+                                                        <td>@filteredTransactions.ElementAt(i).Comment</td>
+                                                        <td>
+                                                            @(
+                                                            (filteredTransactions.ElementAt(i).Category)
+                                                                )
+                                                        </td>
+                                                        <td>@filteredTransactions.ElementAt(i).Amount</td>
+                                                    </tr>
+                                                }
+
+                                            }
                                         }
                                     }
-                                }
-                            </tbody>
-                        </MudSimpleTable>
-                    </div>
-                </MudPaper>
-            </MudItem>
-        </MudGrid>
+                                </tbody>
+                            </MudSimpleTable>
+                        </div>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Style=" height : 150px; width : 150px;" />
+}
 @code {
     public List<SpendLess.Shared.Transactions> Transactions;
 

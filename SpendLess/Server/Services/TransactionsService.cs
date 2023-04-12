@@ -91,11 +91,18 @@ namespace SpendLess.Server.Services
 
         public async Task<int?> AddTicket(Ticket? ticket, SpendLessContext _context, HttpContext _httpContext)
         {
-            var user = GetUser(_context, _httpContext);
-            ticket.UserId = user.Id;
+            await _databaseService.AddTicket(ticket);
 
-            _databaseService.AddTicket(ticket);
-            _databaseService.SaveChangesAsync();
+            if(!string.IsNullOrWhiteSpace(ticket.Description))
+            {
+                Message temp = new Message();
+                temp.senderID = ticket.UserId;
+                temp.ticketID = ticket.Id;
+                temp.message = ticket.Description;
+                temp.date = DateTime.Now;
+
+                await _databaseService.AddMessage(temp);
+            }
 
             return ticket.Id;
         }

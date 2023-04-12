@@ -1,45 +1,85 @@
-﻿@using SpendLess.Shared
+﻿@using SpendLess.Client.Services;
+@using SpendLess.Shared
+@inject ITransactionService TransactionService
+@inject ITicketService TicketService
 
 <MudDialog>
     <DialogContent>
-        <MudText Style="text-align: center">@ContentText</MudText>
-        <MudCard Outlined="true" Style="width: 250px; min-height: auto; margin: 0 auto; overflow:hidden">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText>@Ticket.Title</MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    @if (Ticket.Status == 0)
-                    {
-                        <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error"></MudIcon>
-                    }
-                    else if (Ticket.Status == 2)
-                    {
-                        <MudIcon Icon="@Icons.Material.Filled.Pending" Color="Color.Warning"></MudIcon>
-                    }
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText>@Ticket.Description</MudText>
-            </MudCardContent>
-        </MudCard>
+
+        @if (IsForm)
+        {
+
+            <MudTextField Placeholder="Title" @bind-Value="@ticketObject.Title" Variant="Variant.Outlined" Required="true" RequiredError="Title is required!" Style="margin: 2rem 2rem; padding:inherit;"></MudTextField>
+
+            <MudTextField Lines="10" Label="Description" @bind-Value="@ticketObject.Description" Variant="Variant.Outlined" Placeholder="Please explain your problem in as much detail as possible" Style="margin: 2rem 2rem;"></MudTextField>
+        }
+        else
+        {
+            <MudText Style="text-align: center">@ContentText</MudText>
+            <MudCard Outlined="true" Style="width: 250px; min-height: auto; margin: 0 auto; overflow:hidden">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText>@Ticket.Title</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        @if (Ticket.Status == 0)
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error"></MudIcon>
+                        }
+                        else if (Ticket.Status == 2)
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Pending" Color="Color.Warning"></MudIcon>
+                        }
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>@Ticket.Description</MudText>
+                </MudCardContent>
+            </MudCard>
+        }
     </DialogContent>
+
+
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
+        @if (IsForm)
+        {
+            <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
+        }
+        else
+        {
+            <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Solve">@ButtonText</MudButton>
+        }
     </DialogActions>
+
 </MudDialog>
 
 
 
 @code {
+
+
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter] public String ContentText { get; set; }
     [Parameter] public String ButtonText { get; set; }
     [Parameter] public Color Color { get; set; }
     [Parameter] public Ticket Ticket { get; set; }
+    [Parameter] public bool IsForm { get; set; } = false;
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    public Ticket ticketObject = new Ticket();
+
+    void Solve() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
+
+    public async Task Submit()
+    {
+        if (!string.IsNullOrEmpty(ticketObject.Title))
+        {
+            ticketObject.UserId = TransactionService.UserId;
+            await TicketService.CreateTicket(ticketObject);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
 }

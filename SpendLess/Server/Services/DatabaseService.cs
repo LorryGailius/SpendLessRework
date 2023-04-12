@@ -84,10 +84,8 @@ namespace SpendLess.Server.Services
         public async Task AddTicket(Ticket ticket)
         {
             // Add ticket to database
-            await _context.Messages.AddAsync(new Message { ticketID = ticket.Id, senderID = ticket.UserId, message = ticket.Description });
             await _context.Tickets.AddAsync(ticket);
-            await AddMessage(ticket.Description, ticket.Id, ticket.UserId);
-            await SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task RemoveTicket(int id)
@@ -121,9 +119,7 @@ namespace SpendLess.Server.Services
             temp.ticketID = id;
             temp.senderID = senderId;
             await _context.Messages.AddAsync(temp);
-            // Change ticket status to in progress
             var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
-            ticket.Status = 2;
             // Change description to message
             ticket.Description = temp.message;
             _context.Tickets.Update(ticket);

@@ -120,6 +120,32 @@ namespace SpendLess.Client.Services
             await this.OnTicketsChanged();
         }
 
+        public async Task CreateTicket(Ticket ticket)
+        {
+            var client = _clientFactory.CreateClient();
+            try
+            {
+                string token = await _localStorage.GetItemAsStringAsync("token");
+                client.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+                var response = await client.PostAsJsonAsync("https://localhost:7290/api/Transactions/AddTicket", ticket);
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Succresss");
+                    int id = await response.Content.ReadFromJsonAsync<int>();
+                    ticket.Id = id;
+                    Tickets.Add(ticket);
+                    _snackBarService.SuccessMsg("Ticket was successfully submitted");
+                }
+            }
+            catch (Exception ex)
+            {
+                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
+            }
+            await this.OnTicketsChanged();
+        }
+
         public TicketService(IHttpClientFactory clientFactory, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider, ISnackBarService snackBarService)
         {
             _clientFactory = clientFactory;

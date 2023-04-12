@@ -7,8 +7,8 @@ namespace SpendLess.Client.Services
         public Task GetTickets();
         public Task<Ticket> GetTicket(int id);
         public List<Ticket> Tickets { get; set; }
-
         public Task ResolveTicket(Ticket ticket);
+        Task CreateTicket(Ticket ticket);
 
         public event EventHandler<EventArgs>? TicketsChanged;
     }

@@ -4,6 +4,7 @@
 @inject ITransactionService TransactionService
 @inject NavigationManager NavigationManager
 @inject ITicketService TicketService
+@inject IDialogService DialogService
 
 
 <div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 1rem 0;">
@@ -11,7 +12,7 @@
     {
         @foreach (Ticket ticket in TicketService.Tickets)
         {
-            <MudCard @ondblclick="@(() => { NavigationManager.NavigateTo($"/ticket/{ticket.Id}"); })" Style="max-height: 100px; margin: 0 12rem 0.25rem 5rem; overflow: hidden; text-overflow:ellipsis;">
+            <MudCard @ondblclick="@(() => { NavigationManager.NavigateTo($"/ticket/{ticket.Id}"); })" Style="max-height: 100px; margin: 0 12rem 0.25rem 5rem; overflow: hidden; text-overflow:ellipsis;" Outlined="true">
 
                 <MudCardHeader>
                     <CardHeaderContent>
@@ -22,11 +23,12 @@
                 <MudCardContent>
                     <MudText Style="user-select: none;">@ticket.Description</MudText>
                 </MudCardContent>
-
             </MudCard>
         }
     }
 </div>
+
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Style="position:absolute; z-index: 5; bottom: 3%; right: 3%;" OnClick="showDialog"/>
 
 @code {
 
@@ -34,5 +36,26 @@
     {
         TicketService.TicketsChanged += ((source, args) => StateHasChanged());
         TicketService.GetTickets();
+    }
+
+    private async void showDialog()
+    {
+        var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+        var parameters = new DialogParameters();
+
+        parameters.Add("ContentText", "");
+        parameters.Add("ButtonText", "Submit");
+        parameters.Add("Color", Color.Primary);
+        parameters.Add("IsForm", true);
+
+        var dialog = DialogService.Show<TicketDialog>("Please specify your problem", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await TicketService.GetTickets();
+        }
     }
 }

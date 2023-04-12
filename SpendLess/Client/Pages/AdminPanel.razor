@@ -12,16 +12,16 @@
 @*If status code is 1, then the ticket is resolved*@
 @*If status code is 2, then the ticket is opened*@
 
-<div style="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center">
+<div style="height:100%; width:100%; justify-content: center; padding: 2rem;">
 
-    <MudGrid Spacing="2" Style="Margin: 0;">
+    <MudGrid Spacing="2" Justify="Justify.FlexStart">
         @{
             if (TicketService.Tickets is not null)
             {
                 foreach (var ticket in TicketService.Tickets)
                 {
-                    <MudItem Style="height: 250px;">
-                        <MudCard Outlined="true" Style="width: 400px;">
+                    <MudItem Style="height: 200px; margin: 0 0 1rem 0;">
+                        <MudCard Outlined="true" Style="width: 400px; height: 200px; overflow:hidden; text-overflow:ellipsis;">
                             <MudCardHeader>
                                 <CardHeaderContent>
                                     <MudText>@ticket.Title</MudText>
@@ -37,10 +37,10 @@
                                     }
                                 </CardHeaderActions>
                             </MudCardHeader>
-                            <MudCardContent>
-                                <MudText Style="overflow: hidden">@ticket.Description</MudText>
+                            <MudCardContent Style="height : 50px; margin: 0 0 2rem 0">
+                                <MudText>@ticket.Description</MudText>
                             </MudCardContent>
-                            <MudCardActions Style="display: flex; justify-content: space-between">
+                            <MudCardActions Style="display: flex; justify-content: space-between;">
                                 <MudButton Color="Color.Info" Variant="Variant.Filled"
                                            OnClick="@(() => { NavigationManager.NavigateTo($"/ticket/{ticket.Id}"); })">Check
                                 </MudButton>

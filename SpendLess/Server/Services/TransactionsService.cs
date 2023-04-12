@@ -100,7 +100,7 @@ namespace SpendLess.Server.Services
             return ticket.Id;
         }
 
-        public async Task<bool> DeleteTicket(int id, SpendLessContext _context)
+        public async Task<bool> DeleteTicket(int id, SpendLessContext _context, HttpContext _httpContext)
         {
             if (id < 0)
             {
@@ -108,6 +108,25 @@ namespace SpendLess.Server.Services
             }
 
             _databaseService.RemoveTicket(id);
+            await _databaseService.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ResolveTicket(int id, SpendLessContext _context, HttpContext _httpContext)
+        {
+            if (id < 0)
+            {
+                return false;
+            }
+
+            var user = await GetUser(_context, _httpContext);
+
+            if(!user.IsAdmin) 
+            {
+                return false;
+            }
+
+            await _databaseService.ResolveTicket(id);
             await _databaseService.SaveChangesAsync();
             return true;
         }

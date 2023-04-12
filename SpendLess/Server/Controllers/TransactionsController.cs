@@ -56,11 +56,10 @@ namespace SpendLess.Server.Controllers
 
         [HttpDelete("DeleteTicket/{id}")]
         public async Task DeleteTicket(int id) =>
-            await _service.DeleteTicket(id, _context);
+            await _service.DeleteTicket(id, _context, HttpContext);
 
-        [HttpGet("GetMessages/{id}")]
-        public async Task<ActionResult<List<Message>>> GetMessages(int id) =>
-            await _service.GetMessages(id, _context, HttpContext);
-
+        [HttpDelete("ResolveTicket/{id}")]
+        public async Task ResolveTicket(int id) =>
+            await _service.ResolveTicket(id, _context, HttpContext);
     }
 }

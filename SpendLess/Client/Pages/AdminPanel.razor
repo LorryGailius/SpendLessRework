@@ -16,7 +16,7 @@
 
     <MudGrid Spacing="2" Justify="Justify.FlexStart">
         @{
-            if (TicketService.Tickets is not null)
+            if (TicketService.Tickets is not null && TicketService.Tickets.Count > 0)
             {
                 foreach (var ticket in TicketService.Tickets)
                 {
@@ -78,7 +78,7 @@
         }
     }
 
-    private void showDialog(Ticket sendTicket)
+    private async void showDialog(Ticket sendTicket)
     {
         var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium, FullWidth = true };
 
@@ -89,7 +89,14 @@
         parameters.Add("Color", Color.Success);
         parameters.Add("Ticket", sendTicket);
 
-        DialogService.Show<TicketDialog>("Are you sure?", parameters, options);
+        var dialog = DialogService.Show<TicketDialog>("Are you sure?", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await TicketService.ResolveTicket(sendTicket);
+        }
     }
 
 

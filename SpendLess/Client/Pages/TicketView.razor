@@ -20,7 +20,7 @@
                     <div style="display: flex; flex-direction: @(message.senderID == TransactionService.UserId ? "row-reverse" : "row"); margin-bottom: 10px;">
                         <div style="background-color: @(message.senderID == TransactionService.UserId ? "lightblue" : "lightgreen"); padding: 5px 10px; border-radius: 10px; color: white;">
                             <div>@message.message</div>
-                            <div style="font-size: 12px; margin-top: 5px; text-align: right;">@message.date.ToString("HH:mm")</div>
+                            <div style="font-size: 12px; margin-top: 5px; text-align: right; user-select: none;">@message.date.ToString("HH:mm")</div>
                         </div>
                     </div>
                 }

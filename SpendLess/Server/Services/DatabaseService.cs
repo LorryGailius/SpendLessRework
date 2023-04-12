@@ -86,13 +86,28 @@ namespace SpendLess.Server.Services
             // Add ticket to database
             await _context.Messages.AddAsync(new Message { ticketID = ticket.Id, senderID = ticket.UserId, message = ticket.Description });
             await _context.Tickets.AddAsync(ticket);
+            await AddMessage(ticket.Description, ticket.Id, ticket.UserId);
+            await SaveChangesAsync();
         }
 
         public async Task RemoveTicket(int id)
         {
-            //Remove ticket from database
             var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+
+            //Remove all messages from ticket
+            var messages = _context.Messages.Where(m => m.ticketID == id);
+            _context.Messages.RemoveRange(messages);
+
             _context.Tickets.Remove(ticket);
+            await SaveChangesAsync();
+        }
+        
+        public async Task ResolveTicket(int id)
+        {
+            var ticket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+            ticket.Status = 1;
+            _context.Tickets.Update(ticket);
+            await SaveChangesAsync();
         }
 
         public async Task<List<Message>> GetMessagesAsync(int id)
@@ -112,11 +127,20 @@ namespace SpendLess.Server.Services
             // Change description to message
             ticket.Description = temp.message;
             _context.Tickets.Update(ticket);
+            await SaveChangesAsync();
         }   
 
         public async Task AddMessage(Message MessageObj)
         {
-            await _context.Messages.AddAsync(MessageObj);
+            await _context.Messages.AddAsync(new Message { ticketID = MessageObj.ticketID, message = MessageObj.message, date = MessageObj.date, senderID = MessageObj.senderID});
+
+            var ticket = _context.Tickets.FirstOrDefault(t => t.Id == MessageObj.ticketID);
+
+            ticket.Description = MessageObj.message;
+
+            _context.Tickets.Update(ticket);
+
+            await SaveChangesAsync();
         }
     }
 }

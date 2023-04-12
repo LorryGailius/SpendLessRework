@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using SpendLess.Shared;
 using System.Net.Http.Json;
+using System.Net.Http;
 
 namespace SpendLess.Client.Services
 {
@@ -57,7 +58,7 @@ namespace SpendLess.Client.Services
         public async Task GetTickets()
         {
             var client = _clientFactory.CreateClient();
-            
+
             try
             {
                 var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetTickets");
@@ -77,7 +78,7 @@ namespace SpendLess.Client.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<List<Ticket>>();
-                    
+
                     result = result.OrderByDescending(x => x.Status).ToList();
 
                     Tickets = result;
@@ -92,6 +93,33 @@ namespace SpendLess.Client.Services
             await this.OnTicketsChanged();
         }
 
+        public async Task ResolveTicket(Ticket ticket)
+        {
+            var client = _clientFactory.CreateClient();
+            try
+            {
+                string token = await _localStorage.GetItemAsStringAsync("token");
+
+                client.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+
+                var response = await client.DeleteAsync($"https://localhost:7290/api/Transactions/ResolveTicket/{ticket.Id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _snackBarService.SuccessMsg("Transaction was successfully deleted");
+                    Tickets.Remove(ticket);
+                    await this.OnTicketsChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
+            }
+            Console.WriteLine("Updating tickets");
+        }
+
         public TicketService(IHttpClientFactory clientFactory, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider, ISnackBarService snackBarService)
         {
             _clientFactory = clientFactory;
@@ -102,7 +130,7 @@ namespace SpendLess.Client.Services
 
         public async Task OnTicketsChanged()
         {
-            if(TicketsChanged is not null)
+            if (TicketsChanged is not null)
                 TicketsChanged.Invoke(this, EventArgs.Empty);
         }
     }

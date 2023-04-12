@@ -12,7 +12,8 @@ namespace SpendLess.Server.Services
         Task<List<Ticket>> GetTickets(SpendLessContext _context, HttpContext _httpContext);
         Task<Ticket> GetTicket(int id, SpendLessContext _context, HttpContext _httpContext);
         Task<int?> AddTicket(Ticket? ticket, SpendLessContext _context, HttpContext _httpContext);
-        Task<bool> DeleteTicket(int id, SpendLessContext _context);
+        Task<bool> DeleteTicket(int id, SpendLessContext _context, HttpContext _httpContext);
+        Task<bool> ResolveTicket(int id, SpendLessContext _context, HttpContext _httpContext);
         Task<List<Message>> GetMessages(int id, SpendLessContext _context, HttpContext _httpContext);
     }
 }

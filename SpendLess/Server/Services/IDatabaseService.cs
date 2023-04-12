@@ -17,7 +17,9 @@ namespace SpendLess.Server.Services
         Task<Ticket> GetTicketAsync(int id, int userId, bool userIsAdmin);
         Task AddTicket(Ticket ticket);
         Task RemoveTicket(int id);
+        Task ResolveTicket(int id);
         Task<List<Message>> GetMessagesAsync(int id);
         Task AddMessage(String message, int id, int senderId);
+        Task AddMessage(Message MessageObj);
     }
 }

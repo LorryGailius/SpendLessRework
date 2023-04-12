@@ -128,30 +128,33 @@ namespace SpendLess.Server.Services
 
         public async Task AddMessage(Message MessageObj)
         {
-            await _context.Messages.AddAsync(new Message { ticketID = MessageObj.ticketID, message = MessageObj.message, date = MessageObj.date, senderID = MessageObj.senderID});
-
             var ticket = _context.Tickets.FirstOrDefault(t => t.Id == MessageObj.ticketID);
 
-            //Check if sender is admin
-            var sender = _context.Users.FirstOrDefault(u => u.Id == MessageObj.senderID);
-
-            if (sender.IsAdmin)
+            if (ticket.Status != 1)
             {
-                //Change ticket status to in progress
-                ticket.Status = 2;
-                ticket.SupportId = sender.Id;
+                await _context.Messages.AddAsync(new Message { ticketID = MessageObj.ticketID, message = MessageObj.message, date = MessageObj.date, senderID = MessageObj.senderID });
+
+                //Check if sender is admin
+                var sender = _context.Users.FirstOrDefault(u => u.Id == MessageObj.senderID);
+
+                if (sender.IsAdmin)
+                {
+                    //Change ticket status to in progress
+                    ticket.Status = 2;
+                    ticket.SupportId = sender.Id;
+                }
+                else
+                {
+                    //Change ticket status to open
+                    ticket.Status = 0;
+                }
+
+                ticket.Description = MessageObj.message;
+
+                _context.Tickets.Update(ticket);
+
+                await SaveChangesAsync();
             }
-            else
-            {
-                //Change ticket status to open
-                ticket.Status = 0;
-            }
-
-            ticket.Description = MessageObj.message;
-
-            _context.Tickets.Update(ticket);
-
-            await SaveChangesAsync();
         }
     }
 }

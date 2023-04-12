@@ -32,9 +32,9 @@
 
             </MudContainer>
 
-            <MudContainer Style="display: flex; align-items: center; max-height: 150px; position: absolute; bottom: 0; padding: inherit">
-                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="height: 100%; margin: 0 0 0 2rem" OnKeyUp="HandleInput"></MudTextField>
-                <MudIconButton @onclick="SendMessage" Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Size="Size.Medium" Style="height: 100%; margin: 0 2rem 0 0" />
+            <MudContainer Style="display: flex; align-items: center; max-height: 150px; position: absolute; bottom: 0; padding: inherit;">
+                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="height: 100%; margin: 0 0 0 2rem" OnKeyUp="HandleInput" ></MudTextField>
+                <MudIconButton @onclick="SendMessage" Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Size="Size.Medium" Style="height: 100%; margin: 5px 2rem 0 0;"/>
             </MudContainer>
 
         </MudPaper>

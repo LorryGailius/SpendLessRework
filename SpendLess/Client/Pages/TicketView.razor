@@ -6,6 +6,8 @@
 @inject ITransactionService TransactionService
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
+@inject IDialogService DialogService
+@inject IJSRuntime JSRuntime
 
 <div style="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center;">
     @if (ticket is not null)
@@ -13,8 +15,11 @@
 
         <MudPaper Style="margin: 10px 0; padding: 10px 0; position: relative; width: 50%">
 
-            <MudContainer Style="overflow:scroll; height:max-content;">
+            <MudContainer Style="max-height: 5rem; justify-content:center; text-align: center; width: 100%; overflow: hidden; text-overflow:ellipsis;">
+                <MudText Typo="Typo.h4">@ticket.Title</MudText>
+            </MudContainer>
 
+            <MudContainer Style="overflow:scroll; height:fit-content; max-height: calc(100% - 100px);">
                 @foreach (Message message in messages)
                 {
                     <div style="display: flex; flex-direction: @(message.senderID == TransactionService.UserId ? "row-reverse" : "row"); margin-bottom: 10px;">
@@ -28,19 +33,24 @@
             </MudContainer>
 
             <MudContainer Style="display: flex; align-items: center; max-height: 150px; position: absolute; bottom: 0; padding: inherit">
-                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="height: 100%; margin: 0 0 0 2rem"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="height: 100%; margin: 0 0 0 2rem" OnKeyUp="HandleInput"></MudTextField>
                 <MudIconButton @onclick="SendMessage" Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Size="Size.Medium" Style="height: 100%; margin: 0 2rem 0 0" />
             </MudContainer>
 
         </MudPaper>
 
-
+        @if (TransactionService.IsAdmin)
+        {
+            <MudFab Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" Style="position:absolute; z-index: 5; bottom: 3%; right: 3%;" OnClick="@(() => showDialog(ticket))" />
+        }
     }
     else
     {
         <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" Style="position: absolute; top: 50%; bottom: 50%; left: 50%; right: 50%" />
     }
 </div>
+
+
 
 @code {
     [Parameter]
@@ -109,4 +119,37 @@
             await hubConnection.DisposeAsync();
         }
     }
+
+
+    private async void showDialog(Ticket sendTicket)
+    {
+        var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+        var parameters = new DialogParameters();
+
+        parameters.Add("ContentText", "Do you really want to resolve the ticket:");
+        parameters.Add("ButtonText", "Resolve");
+        parameters.Add("Color", Color.Success);
+        parameters.Add("Ticket", sendTicket);
+
+        var dialog = DialogService.Show<TicketDialog>("Are you sure?", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await TicketService.ResolveTicket(sendTicket);
+
+            NavigationManager.NavigateTo("/admin");
+        }
+    }
+
+    private async Task HandleInput(KeyboardEventArgs keyboardEventArgs)
+    {
+        if(keyboardEventArgs.Key.Equals("Enter"))
+        {
+            await SendMessage();
+        }
+    }
+
 }

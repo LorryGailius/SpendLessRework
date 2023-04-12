@@ -2,13 +2,36 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using SpendLess.Server.Services;
+using SpendLess.Shared;
 
 public class SupportHub : Hub
 {
-    DatabaseService _databaseService;
-
-    public async Task SendMessage(string user, string message)
+    private readonly IDatabaseService _databaseService;
+    public SupportHub(IDatabaseService databaseService)
     {
-        await Clients.All.SendAsync("ReceiveMessage", user, message);
+        _databaseService = databaseService;
     }
+
+    public override async Task OnConnectedAsync()
+    {
+        await base.OnConnectedAsync();
+    }
+
+    public async Task SendMessage(int user, int ticketId, string message)
+    {
+        Message tempMessage = new Message();
+        tempMessage.ticketID = ticketId;
+        tempMessage.senderID = user;
+        tempMessage.message = message;
+        tempMessage.date = DateTime.Now;
+
+        await Clients.Group(ticketId.ToString()).SendAsync("GetMessage", tempMessage);
+        //await Clients.All.SendAsync("GetMessage", tempMessage);
+    }
+
+    public async Task JoinGroup(int ticketId)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, ticketId.ToString());
+    }
+
 }

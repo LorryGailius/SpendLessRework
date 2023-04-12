@@ -113,5 +113,10 @@ namespace SpendLess.Server.Services
             ticket.Description = temp.message;
             _context.Tickets.Update(ticket);
         }   
+
+        public async Task AddMessage(Message MessageObj)
+        {
+            await _context.Messages.AddAsync(MessageObj);
+        }
     }
 }

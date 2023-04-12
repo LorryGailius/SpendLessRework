@@ -11,16 +11,16 @@
     {
         @foreach (Ticket ticket in TicketService.Tickets)
         {
-            <MudCard @ondblclick="@(() => { NavigationManager.NavigateTo($"/ticket/{ticket.Id}"); })" Style="max-height: 100px; margin: 0 12rem 0.25rem 12rem">
+            <MudCard @ondblclick="@(() => { NavigationManager.NavigateTo($"/ticket/{ticket.Id}"); })" Style="max-height: 100px; margin: 0 12rem 0.25rem 5rem; overflow: hidden; text-overflow:ellipsis;">
 
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Style="user-select: none;">@ticket.Title</MudText>
+                        <MudText Style="user-select: none; word-wrap:break-word;">@ticket.Title</MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
 
                 <MudCardContent>
-                    <MudText Style="overflow: hidden; user-select: none;">@ticket.Description</MudText>
+                    <MudText Style="user-select: none;">@ticket.Description</MudText>
                 </MudCardContent>
 
             </MudCard>

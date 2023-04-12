@@ -25,13 +25,21 @@ public class SupportHub : Hub
         tempMessage.message = message;
         tempMessage.date = DateTime.Now;
 
+        await _databaseService.AddMessage(tempMessage);
+
         await Clients.Group(ticketId.ToString()).SendAsync("GetMessage", tempMessage);
         //await Clients.All.SendAsync("GetMessage", tempMessage);
     }
 
     public async Task JoinGroup(int ticketId)
     {
+        List<Message> history = await _databaseService.GetMessagesAsync(ticketId);
         await Groups.AddToGroupAsync(Context.ConnectionId, ticketId.ToString());
+
+        foreach(var message in history)
+        {
+            await Clients.Group(ticketId.ToString()).SendAsync("GetMessage", message);
+        }
     }
 
 }

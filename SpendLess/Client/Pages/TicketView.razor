@@ -1,98 +1,112 @@
-﻿    @page "/ticket/{Id:int}"
-    @using SpendLess.Shared
-    @using SpendLess.Client.Services
-    @using Microsoft.AspNetCore.SignalR.Client
-    @inject ITicketService TicketService
-    @inject ITransactionService TransactionService
-    @inject NavigationManager NavigationManager
-    @implements IAsyncDisposable
+﻿@page "/ticket/{Id:int}"
+@using SpendLess.Shared
+@using SpendLess.Client.Services
+@using Microsoft.AspNetCore.SignalR.Client
+@inject ITicketService TicketService
+@inject ITransactionService TransactionService
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
 
-    <div style="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center;">
-        @if (ticket is not null)
-        {
-            @if (IsConnected)
-            {
-                @foreach (var message in messages)
+<div style="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center;">
+    @if (ticket is not null)
+    {
+
+        <MudPaper Style="margin: 10px 0; padding: 10px 0; position: relative; width: 50%">
+
+            <MudContainer Style="overflow:scroll; height:max-content;">
+
+                @foreach (Message message in messages)
                 {
-                    <h6>@message.message</h6>
+                    <div style="display: flex; flex-direction: @(message.senderID == TransactionService.UserId ? "row-reverse" : "row"); margin-bottom: 10px;">
+                        <div style="background-color: @(message.senderID == TransactionService.UserId ? "lightblue" : "lightgreen"); padding: 5px 10px; border-radius: 10px; color: white;">
+                            <div>@message.message</div>
+                            <div style="font-size: 12px; margin-top: 5px; text-align: right;">@message.date.ToString("HH:mm")</div>
+                        </div>
+                    </div>
                 }
-            }
-            <div style="position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, -50%); margin: 0 auto; display: flex;">
-                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="min-width: 400px"></MudTextField>
-                <MudButton @onclick="SendMessage">Send</MudButton>
-            </div>
+
+            </MudContainer>
+
+            <MudContainer Style="display: flex; align-items: center; max-height: 150px; position: absolute; bottom: 0; padding: inherit">
+                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="height: 100%; margin: 0 0 0 2rem"></MudTextField>
+                <MudIconButton @onclick="SendMessage" Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Size="Size.Medium" Style="height: 100%; margin: 0 2rem 0 0" />
+            </MudContainer>
+
+        </MudPaper>
+
+
+    }
+    else
+    {
+        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" Style="position: absolute; top: 50%; bottom: 50%; left: 50%; right: 50%" />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    Ticket ticket;
+
+    private HubConnection? hubConnection;
+
+    List<Message> messages = new List<Message>();
+
+    public string TextValue { get; set; }
+
+    protected override async void OnInitialized()
+    {
+        TicketService.TicketsChanged += ((source, args) => StateHasChanged());
+        ticket = await TicketService.GetTicket(Id);
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/supporthub"))
+            .Build();
+
+        hubConnection.On<Message>("GetMessage", recieved =>
+           {
+               messages.Add(recieved);
+               InvokeAsync(StateHasChanged);
+           });
+
+        await hubConnection.StartAsync();
+
+        await JoinTicket();
+        StateHasChanged();
+    }
+
+    private async Task JoinTicket()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.SendAsync("JoinGroup", ticket.Id);
         }
         else
         {
-            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" Style="position: absolute; top: 50%; bottom: 50%; left: 50%; right: 50%" />
-        }
-    </div>
-
-    @code {
-        [Parameter]
-        public int Id { get; set; }
-
-        Ticket ticket;
-
-        private HubConnection? hubConnection;
-
-        List<Message> messages = new List<Message>();
-
-        public string TextValue { get; set; }
-
-        protected override async void OnInitialized()
-        {
-            TicketService.TicketsChanged += ((source, args) => StateHasChanged());
-            ticket = await TicketService.GetTicket(Id);
-
-            hubConnection = new HubConnectionBuilder()
-                .WithUrl(NavigationManager.ToAbsoluteUri("/supporthub"))
-                .Build();
-
-            hubConnection.On<Message>("GetMessage", recieved =>
-               {
-                   messages.Add(recieved);
-                   InvokeAsync(StateHasChanged);
-               });
-
-            await hubConnection.StartAsync();
-
-            await JoinTicket();
-            StateHasChanged();
-        }
-
-        private async Task JoinTicket()
-        {
-            if (hubConnection is not null)
-            {
-                await hubConnection.SendAsync("JoinGroup", ticket.Id);
-            }
-            else
-            {
-                Console.WriteLine("Hub connection is null");
-            }
-        }
-
-        private async Task SendMessage()
-        {
-            if (hubConnection is not null)
-            {
-                await hubConnection.SendAsync("SendMessage", TransactionService.UserId, ticket.Id, TextValue);
-                TextValue = string.Empty;
-            }
-            else
-            {
-                Console.WriteLine("Hub connection is null");
-            }
-        }
-
-        public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
-        public async ValueTask DisposeAsync()
-        {
-            if (hubConnection is not null)
-            {
-                await hubConnection.DisposeAsync();
-            }
+            Console.WriteLine("Hub connection is null");
         }
     }
+
+    private async Task SendMessage()
+    {
+        if (hubConnection is not null && !string.IsNullOrWhiteSpace(TextValue))
+        {
+            await hubConnection.SendAsync("SendMessage", TransactionService.UserId, ticket.Id, TextValue);
+            TextValue = string.Empty;
+        }
+        else
+        {
+            Console.WriteLine("Hub connection is null");
+        }
+    }
+
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

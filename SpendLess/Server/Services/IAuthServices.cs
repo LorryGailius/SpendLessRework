@@ -10,6 +10,6 @@ namespace SpendLess.Server.Services
         bool VerifyRequest(UserDto request);
         Task<LoginResponse> Login(UserDto request, IConfiguration _configuration);
         Task<LoginResponse> Register(UserDto request, IConfiguration _configuration);
-
+        Task<bool> VerifyEmail(string email);
     }
 }

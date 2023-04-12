@@ -136,6 +136,21 @@ namespace SpendLess.Server.Services
 
             var ticket = _context.Tickets.FirstOrDefault(t => t.Id == MessageObj.ticketID);
 
+            //Check if sender is admin
+            var sender = _context.Users.FirstOrDefault(u => u.Id == MessageObj.senderID);
+
+            if (sender.IsAdmin)
+            {
+                //Change ticket status to in progress
+                ticket.Status = 2;
+                ticket.SupportId = sender.Id;
+            }
+            else
+            {
+                //Change ticket status to open
+                ticket.Status = 0;
+            }
+
             ticket.Description = MessageObj.message;
 
             _context.Tickets.Update(ticket);

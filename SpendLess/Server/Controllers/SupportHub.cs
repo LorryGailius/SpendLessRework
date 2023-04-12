@@ -38,7 +38,7 @@ public class SupportHub : Hub
 
         foreach(var message in history)
         {
-            await Clients.Group(ticketId.ToString()).SendAsync("GetMessage", message);
+            await Clients.Caller.SendAsync("GetMessage", message);
         }
     }
 

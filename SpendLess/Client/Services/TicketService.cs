@@ -80,7 +80,9 @@ namespace SpendLess.Client.Services
                 {
                     var result = await response.Content.ReadFromJsonAsync<List<Ticket>>();
 
-                    result = result.OrderByDescending(x => x.Status).ToList();
+
+                    //put tickets with status 2 at the top of the list then 
+                    result = result.OrderBy(ticket => ticket.Status == 2 ? 0 : ticket.Status == 0 || ticket.Status == 1 ? 1 : 2).ToList();
 
                     Tickets = result;
                 }

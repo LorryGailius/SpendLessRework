@@ -61,8 +61,6 @@ namespace SpendLess.Server.Services
                 //Return tickets with status code 0 or in progress my specific admin
                 return await _context.Tickets.Where(t => t.Status == 0 || (t.Status == 2 && t.SupportId == userId)).ToListAsync();
             }
-
-            System.Diagnostics.Debug.WriteLine("Not Admin:");
             //Return tickets of the user
             return await _context.Tickets.Where(t => t.UserId == userId).ToListAsync();
         }

@@ -42,4 +42,9 @@ public class SupportHub : Hub
         }
     }
 
+    public async Task Resolve(int ticketId)
+    {
+        await Clients.Group(ticketId.ToString()).SendAsync("Resolved", true);
+    }
+
 }

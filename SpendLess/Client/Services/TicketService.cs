@@ -82,7 +82,7 @@ namespace SpendLess.Client.Services
 
 
                     //put tickets with status 2 at the top of the list then 
-                    result = result.OrderBy(ticket => ticket.Status == 2 ? 0 : ticket.Status == 0 || ticket.Status == 1 ? 1 : 2).ToList();
+                    result = result.OrderBy(ticket => ticket.Status == 2 ? 0 : ticket.Status == 0 ? 1 : 4).ToList();
 
                     Tickets = result;
                 }
@@ -145,6 +145,7 @@ namespace SpendLess.Client.Services
                     int id = await response.Content.ReadFromJsonAsync<int>();
                     ticket.Id = id;
                     Tickets.Add(ticket);
+                    Tickets = Tickets.OrderBy(ticket => ticket.Status == 2 ? 0 : ticket.Status == 0 ? 1 : 4).ToList();
                     _snackBarService.SuccessMsg("Ticket was successfully submitted");
                 }
             }

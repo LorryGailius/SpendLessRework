@@ -7,7 +7,6 @@
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
 @inject IDialogService DialogService
-@inject IJSRuntime JSRuntime
 
 <div style="height: 100%; width: 100%; overflow: auto; display: flex; justify-content: center;">
     @if (ticket is not null)
@@ -33,8 +32,8 @@
             </MudContainer>
 
             <MudContainer Style="display: flex; align-items: center; max-height: 150px; position: absolute; bottom: 0; padding: inherit;">
-                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="height: 100%; margin: 0 0 0 2rem" OnKeyUp="HandleInput" ></MudTextField>
-                <MudIconButton @onclick="SendMessage" Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Size="Size.Medium" Style="height: 100%; margin: 5px 2rem 0 0;"/>
+                <MudTextField @bind-Value="TextValue" Variant="Variant.Outlined" Style="height: 100%; margin: 0 0 0 2rem" OnKeyUp="HandleInput" ReadOnly=@(ticket.Status == 1)></MudTextField>
+                <MudIconButton @onclick="SendMessage" Icon="@Icons.Material.Filled.Send" Color="Color.Primary" Size="Size.Medium" Style="height: 100%; margin: 5px 2rem 0 0;" Disabled=@(ticket.Status == 1)/>
             </MudContainer>
 
         </MudPaper>
@@ -69,6 +68,11 @@
         TicketService.TicketsChanged += ((source, args) => StateHasChanged());
         ticket = await TicketService.GetTicket(Id);
 
+        if(ticket is not null && ticket.Status == 1)
+        {
+            TextValue = "Ticket is resolved";
+        }
+
         hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/supporthub"))
             .Build();
@@ -76,6 +80,16 @@
         hubConnection.On<Message>("GetMessage", recieved =>
            {
                messages.Add(recieved);
+               InvokeAsync(StateHasChanged);
+           });
+
+        hubConnection.On<bool>("Resolved", recieved =>
+           {
+               ticket.Status = recieved ? 1 : 2;
+               if(ticket.Status == 1)
+               {
+                   TextValue = "Ticket is resolved";
+               }
                InvokeAsync(StateHasChanged);
            });
 
@@ -119,7 +133,6 @@
             await hubConnection.DisposeAsync();
         }
     }
-
 
     private async void showDialog(Ticket sendTicket)
     {

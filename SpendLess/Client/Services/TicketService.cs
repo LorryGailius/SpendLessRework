@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using SpendLess.Shared;
 using System.Net.Http.Json;
 using System.Net.Http;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace SpendLess.Client.Services
 {
@@ -110,6 +111,13 @@ namespace SpendLess.Client.Services
                     _snackBarService.SuccessMsg("Transaction was successfully resolved");
                     Tickets.Remove(ticket);
 
+                    // Send resolve signal to support hub
+                    HubConnection hubConnection = new HubConnectionBuilder()
+                                                        .WithUrl("https://localhost:7290/supporthub")
+                                                        .Build();
+
+                    await hubConnection.StartAsync();
+                    await hubConnection.SendAsync("Resolve", ticket.Id);
                 }
             }
             catch (Exception ex)

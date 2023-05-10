@@ -170,11 +170,13 @@ namespace SpendLess.Server.Services
             family.Balance = 0;
             await _context.Families.AddAsync(family);
             await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Permission = 2);
+            await SaveChangesAsync();
         }
 
         public async Task ChangeDisplayName(int userId, string displayName)
         {
             await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Username = displayName);
+            await SaveChangesAsync();
         }
 
         public async Task JoinFamily(int userId, int familyId)
@@ -182,11 +184,13 @@ namespace SpendLess.Server.Services
             await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.FamilyId = familyId);
             await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Permission = 1);
             await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Username = u.Name);
+            await SaveChangesAsync();
         }
 
         public async Task ChangePermissions(int userId, int permission)
         {
             await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Permission = permission);
+            await SaveChangesAsync();
         }
     }
 }

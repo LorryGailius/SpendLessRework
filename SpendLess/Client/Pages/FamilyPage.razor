@@ -1,5 +1,7 @@
 ﻿@page "/family"
 @using SpendLess.Shared;
+@using SpendLess.Client.Services;
+@inject IFamilyService familyService;
 
 
 <div style="height:100%; width:100%; display: flex; align-items:center; justify-content: center;">
@@ -36,11 +38,17 @@
         </div>
     </MudPaper>
 
+    <MudButton>Crate</MudButton>
+
 </div>
 
 
 
 @code {
 
+    public async void create()
+    {
+        await familyService.CreateFamily("Gailiai");
+    }
 
 }

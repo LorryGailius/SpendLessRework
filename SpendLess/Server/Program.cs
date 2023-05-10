@@ -44,9 +44,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<SpendLessContext>();
+builder.Services.AddScoped<IFamilyService, FamilyService>();
 builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
+//builder.Services.AddScoped<IFamilyService, FamilyService>();
 builder.Services.AddSignalR();
 builder.Services.AddResponseCompression(opts =>
 {

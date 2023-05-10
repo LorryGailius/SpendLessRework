@@ -12,8 +12,8 @@ using SpendLess.Server.Models;
 namespace SpendLess.Server.Migrations
 {
     [DbContext(typeof(SpendLessContext))]
-    [Migration("20230406144025_addedSupportId")]
-    partial class addedSupportId
+    [Migration("20230510174438_one")]
+    partial class one
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,9 @@ namespace SpendLess.Server.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("InitialBalance")
                         .HasColumnType("int");
 
@@ -61,9 +64,36 @@ namespace SpendLess.Server.Migrations
                         .HasColumnType("binary(128)")
                         .IsFixedLength();
 
+                    b.Property<int?>("Permission")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SpendLess.Shared.Family", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double?>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Families");
                 });
 
             modelBuilder.Entity("SpendLess.Shared.Goal", b =>
@@ -82,6 +112,9 @@ namespace SpendLess.Server.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -102,10 +135,11 @@ namespace SpendLess.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("date")
+                    b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("message")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("senderID")
@@ -130,13 +164,14 @@ namespace SpendLess.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("SupportId")
+                    b.Property<int?>("SupportId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
@@ -167,6 +202,9 @@ namespace SpendLess.Server.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Interval")
                         .HasColumnType("int");

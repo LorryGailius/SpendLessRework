@@ -72,6 +72,14 @@ namespace SpendLess.Server.Models
                 entity.Property(e => e.PasswordHash)
                     .HasMaxLength(64)
                     .IsFixedLength();
+
+                entity.Property(e => e.Username)
+                .HasMaxLength(50);
+
+                entity.Property(e => e.FamilyId);
+
+                entity.Property(e => e.Permission);
+
             });
 
             OnModelCreatingPartial(modelBuilder);

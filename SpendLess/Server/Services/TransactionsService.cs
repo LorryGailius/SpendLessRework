@@ -144,5 +144,10 @@ namespace SpendLess.Server.Services
             var messages = result.Result;
             return messages;
         }
+
+        public Task<List<User>> GetGroupUsers(SpendLessContext _context, HttpContext _httpContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

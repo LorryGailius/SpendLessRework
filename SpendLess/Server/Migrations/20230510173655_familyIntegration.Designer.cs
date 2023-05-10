@@ -12,8 +12,8 @@ using SpendLess.Server.Models;
 namespace SpendLess.Server.Migrations
 {
     [DbContext(typeof(SpendLessContext))]
-    [Migration("20230406144353_changedTicketMessage")]
-    partial class changedTicketMessage
+    [Migration("20230510173655_familyIntegration")]
+    partial class familyIntegration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,9 @@ namespace SpendLess.Server.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("InitialBalance")
                         .HasColumnType("int");
 
@@ -61,9 +64,35 @@ namespace SpendLess.Server.Migrations
                         .HasColumnType("binary(128)")
                         .IsFixedLength();
 
+                    b.Property<int?>("Permission")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SpendLess.Shared.Family", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double?>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Families");
                 });
 
             modelBuilder.Entity("SpendLess.Shared.Goal", b =>
@@ -82,6 +111,9 @@ namespace SpendLess.Server.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -169,6 +201,9 @@ namespace SpendLess.Server.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Interval")
                         .HasColumnType("int");

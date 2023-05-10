@@ -1,0 +1,46 @@
+﻿@page "/family"
+@using SpendLess.Shared;
+
+
+<div style="height:100%; width:100%; display: flex; align-items:center; justify-content: center;">
+
+    <MudPaper Width="50%" style="position:fixed;top:0;margin: 2rem 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <MudAvatar Color="Color.Primary" style="margin: 0 1rem">J</MudAvatar>
+                <MudText Typo="Typo.h6">John</MudText>
+            </div>
+            <div style="margin-left: auto; display:flex; align-items:center">
+
+            <MudText Typo="Typo.subtitle1" Align="Align.Center">5000$</MudText>
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+                <MudMenuItem>Profile</MudMenuItem>
+                <MudMenuItem>My account</MudMenuItem>
+                <MudMenuItem>Logout</MudMenuItem>
+            </MudMenu>
+            </div>
+        </div>
+
+        <MudDivider style="margin: 0.25rem 0"/>
+
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <MudAvatar Color="Color.Primary" style="margin: 0 1rem">C</MudAvatar>
+                <MudText Typo="Typo.h6">Caroline</MudText>
+            </div>
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert" style="margin-left: auto;">
+                <MudMenuItem>Profile</MudMenuItem>
+                <MudMenuItem>My account</MudMenuItem>
+                <MudMenuItem>Logout</MudMenuItem>
+            </MudMenu>
+        </div>
+    </MudPaper>
+
+</div>
+
+
+
+@code {
+
+
+}

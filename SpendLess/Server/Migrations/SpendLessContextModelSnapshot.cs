@@ -36,6 +36,9 @@ namespace SpendLess.Server.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("InitialBalance")
                         .HasColumnType("int");
 
@@ -57,6 +60,13 @@ namespace SpendLess.Server.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("binary(128)")
                         .IsFixedLength();
+
+                    b.Property<int?>("Permission")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -99,6 +109,9 @@ namespace SpendLess.Server.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -186,6 +199,9 @@ namespace SpendLess.Server.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("FamilyId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Interval")
                         .HasColumnType("int");

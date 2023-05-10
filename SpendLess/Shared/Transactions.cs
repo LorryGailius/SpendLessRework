@@ -24,6 +24,8 @@
         public int Interval { get; set; }
         public DateTime? EndDate { get; set; }
 
+        public int? FamilyId { get; set; }
+
         public Transactions(int? Id, double? amount, string category, DateTime transactionDate, string comment = "Transaction", int? UserId = null,
                             String period = "oneTime", int interval = 0, DateTime? endDate = null)
         {

@@ -14,7 +14,12 @@ namespace SpendLess.Shared
 
         public double ? Balance { get; set; } = 0;
 
-
+        public Family(int id, string name, double ? balance)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Balance = balance;
+        }
 
 
 

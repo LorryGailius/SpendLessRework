@@ -154,5 +154,39 @@ namespace SpendLess.Server.Services
                 await SaveChangesAsync();
             }
         }
+
+        public async Task<List<Transactions>> GetTransactionsAsync(int userId, int familyId)
+        {
+            return await _context.Transactions.Where(t => t.FamilyId == familyId).ToListAsync();
+        }
+
+        public Task<List<User>> GetFamilyMembers(int familyId)
+        {
+            return _context.Users.Where(u => u.FamilyId == familyId).ToListAsync();
+        }
+
+        public async Task CreateGroup(Family family, int userId)
+        {
+            family.Balance = 0;
+            await _context.Families.AddAsync(family);
+            await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Permission = 2);
+        }
+
+        public async Task ChangeDisplayName(int userId, string displayName)
+        {
+            await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Username = displayName);
+        }
+
+        public async Task JoinFamily(int userId, int familyId)
+        {
+            await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.FamilyId = familyId);
+            await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Permission = 1);
+            await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Username = u.Name);
+        }
+
+        public async Task ChangePermissions(int userId, int permission)
+        {
+            await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.Permission = permission);
+        }
     }
 }

@@ -6,11 +6,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SpendLess.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class familyIntegration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Families",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Balance = table.Column<double>(type: "float", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Families", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Goals",
                 columns: table => new
@@ -21,7 +35,8 @@ namespace SpendLess.Server.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CurrentAmount = table.Column<double>(type: "float", nullable: true)
+                    CurrentAmount = table.Column<double>(type: "float", nullable: true),
+                    FamilyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,8 +51,8 @@ namespace SpendLess.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     senderID = table.Column<int>(type: "int", nullable: false),
                     ticketID = table.Column<int>(type: "int", nullable: false),
-                    message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    date = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,9 +66,10 @@ namespace SpendLess.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SupportId = table.Column<int>(type: "int", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,7 +89,8 @@ namespace SpendLess.Server.Migrations
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Period = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Interval = table.Column<int>(type: "int", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FamilyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,6 +108,9 @@ namespace SpendLess.Server.Migrations
                     PasswordSalt = table.Column<byte[]>(type: "binary(128)", fixedLength: true, maxLength: 128, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    FamilyId = table.Column<int>(type: "int", nullable: true),
+                    Permission = table.Column<int>(type: "int", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InitialBalance = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -102,6 +122,9 @@ namespace SpendLess.Server.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Families");
+
             migrationBuilder.DropTable(
                 name: "Goals");
 

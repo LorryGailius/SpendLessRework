@@ -16,10 +16,11 @@ namespace SpendLess.Server.Models
         public DbSet<Goal> Goals { get; set; } = null!;
 
         public DbSet<Message> Messages { get; set; } = null!;
-
         public DbSet<Ticket> Tickets { get; set; } = null!;
+        public DbSet<Family> Families { get; set; } = null!;
         public virtual DbSet<Transactions> Transactions { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

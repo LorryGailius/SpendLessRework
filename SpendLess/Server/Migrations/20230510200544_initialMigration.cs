@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SpendLess.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class familyIntegration : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -110,7 +110,7 @@ namespace SpendLess.Server.Migrations
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     FamilyId = table.Column<int>(type: "int", nullable: true),
                     Permission = table.Column<int>(type: "int", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     InitialBalance = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

@@ -1,6 +1,6 @@
 ﻿namespace SpendLess.Server.Models
 {
-    public partial class User
+    public class User
     {
 
         public int Id { get; set; }

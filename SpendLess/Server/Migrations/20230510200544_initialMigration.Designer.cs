@@ -12,8 +12,8 @@ using SpendLess.Server.Models;
 namespace SpendLess.Server.Migrations
 {
     [DbContext(typeof(SpendLessContext))]
-    [Migration("20230510173655_familyIntegration")]
-    partial class familyIntegration
+    [Migration("20230510200544_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,8 @@ namespace SpendLess.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 

@@ -21,7 +21,8 @@ namespace SpendLess.Shared
             this.Balance = balance;
         }
 
-
-
+        public Family()
+        {
+        }
     }
 }

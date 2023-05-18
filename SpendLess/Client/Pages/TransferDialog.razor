@@ -1,0 +1,41 @@
+﻿@using SpendLess.Client.Services;
+@inject ITransactionService TransactionService
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField Label="Amount" @bind-Value=Amount/>
+    </DialogContent>
+
+
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
+    </DialogActions>
+
+</MudDialog>
+
+
+
+@code {
+
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public String ButtonText { get; set; }
+    [Parameter] public Color Color { get; set; }
+    [Parameter] public int recieverId { get; set; }
+
+    public int Amount { get; set; }
+    void Cancel() => MudDialog.Cancel();
+
+    public async Task Submit()
+    {
+        if(Amount > 0)
+        {
+            Console.WriteLine("Amount is " + Amount);
+            await TransactionService.AddFamilyTransaction(Amount, recieverId);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
+}

@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Xml.Linq;
 
 namespace SpendLess.Client.Services
 {
@@ -186,6 +188,39 @@ namespace SpendLess.Client.Services
             //    throw;
             //}
             catch(Exception ex){
+                await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
+            }
+        }
+
+        public async Task AddFamilyTransaction(double amount, int recieverId)
+        {
+            var _httpClient = _clientFactory.CreateClient();
+            try
+            {
+                string token = await _localStorage.GetItemAsStringAsync("token");
+                _httpClient.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+
+                var userTransaction = new Transactions(null, amount, "Family", DateTime.Now, "Transfer to family member");
+                var response = await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Transactions/AddTransaction", userTransaction);
+                if (response.IsSuccessStatusCode)
+                {
+                    var id = await response.Content.ReadFromJsonAsync<int>();
+                }
+                else if (response.StatusCode == HttpStatusCode.TooManyRequests)
+                {
+                    _snackBarService.ErrorMsg("Slow down");
+                    return;
+                }
+                else
+                {
+                    _snackBarService.ErrorMsg("Failed to save data!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
                 await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
                 throw;
             }

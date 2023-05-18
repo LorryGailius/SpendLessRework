@@ -1,54 +1,157 @@
 ﻿@page "/family"
 @using SpendLess.Shared;
 @using SpendLess.Client.Services;
+@inject NavigationManager NavigationManager
 @inject IFamilyService familyService;
+@inject IDialogService DialogService
+@inject IPageService PageService;
 
 
 <div style="height:100%; width:100%; display: flex; align-items:center; justify-content: center;">
 
-    <MudPaper Width="50%" style="position:fixed;top:0;margin: 2rem 0;">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center;">
-                <MudAvatar Color="Color.Primary" style="margin: 0 1rem">J</MudAvatar>
-                <MudText Typo="Typo.h6">John</MudText>
-            </div>
-            <div style="margin-left: auto; display:flex; align-items:center">
+    @if (familyService.Family.Name == "-1")
+    {
+        <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" Style="position: absolute; top: 50%; bottom: 50%; left: 50%; right: 50%" />
+    }
+    else if (familyService.Family is not null && familyService.Family.Name != "-2")
+    {
+        <MudPaper Width="50%" style="position:fixed;top:0;margin: 2rem 0;">
+            <MudText Typo="Typo.h1" Align="Align.Center">@familyService.Family.Name</MudText>
 
-            <MudText Typo="Typo.subtitle1" Align="Align.Center">5000$</MudText>
-            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
-                <MudMenuItem>Profile</MudMenuItem>
-                <MudMenuItem>My account</MudMenuItem>
-                <MudMenuItem>Logout</MudMenuItem>
-            </MudMenu>
-            </div>
-        </div>
+            @if (familyService.Users is not null)
+            {
+                @foreach (var member in familyService.Users)
+                {
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center;">
+                            <MudAvatar Color="Color.Primary" style="margin: 0 1rem">@member.Username[0]</MudAvatar>
+                            <MudText Typo="Typo.h6">@member.Username</MudText>
+                        </div>
+                        <div style="margin-left: auto; display:flex; align-items:center">
+                            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+                            <MudMenuItem OnClick="() => Transfer(member.Id)">Send money</MudMenuItem>
+                            </MudMenu>
+                        </div>
+                    </div>
 
-        <MudDivider style="margin: 0.25rem 0"/>
+                    <MudDivider style="margin: 0.25rem 0" />
+                }
+            }
+        </MudPaper>
 
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center;">
-                <MudAvatar Color="Color.Primary" style="margin: 0 1rem">C</MudAvatar>
-                <MudText Typo="Typo.h6">Caroline</MudText>
-            </div>
-            <MudMenu Icon="@Icons.Material.Filled.MoreVert" style="margin-left: auto;">
-                <MudMenuItem>Profile</MudMenuItem>
-                <MudMenuItem>My account</MudMenuItem>
-                <MudMenuItem>Logout</MudMenuItem>
-            </MudMenu>
-        </div>
-    </MudPaper>
+        <MudSimpleTable Dense="false" Hover="true" Bordered="false" Striped="false" Style="overflow-x: auto; width: 100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th width="20%">
+                        <MudDatePicker Label="DateFilterFrom" Editable="true" @bind-Date="dateFilterFrom" Variant="Variant.Outlined" />
+                    </th>
+                    <th width="20%">
+                        <MudDatePicker Label="DateFilterTo" Editable="true" @bind-Date="dateFilterTo" Variant="Variant.Outlined" />
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    @foreach (var h in headings)
+                    {
+                        <th>@h</th>
+                    }
+                    <th width="3%"></th>
+                </tr>
 
-    <MudButton>Crate</MudButton>
+            </thead>
+            <tbody>
+                @{
+                    if (familyService.FamilyTransactions is not null)
+                    {
+                        List<SpendLess.Shared.Transactions> filteredTransactions = familyService.FamilyTransactions;
 
+                        if (dateFilterTo != null)
+                            filteredTransactions = filteredTransactions.Where(x => x.TransactionDate <= dateFilterTo).ToList();
+
+                        if (dateFilterFrom != null)
+                            filteredTransactions = filteredTransactions.Where(x => x.TransactionDate >= dateFilterFrom).ToList();
+
+
+                        if (filteredTransactions != null)
+                        {
+                            for (int i = 0; i < filteredTransactions.Count; i++)
+                            {
+                                int id = filteredTransactions.ElementAt(i).Id ?? 0;
+                                <tr>
+                                    <td>@filteredTransactions.ElementAt(i).Comment</td>
+                                    <td>@((filteredTransactions.ElementAt(i).Category))</td>
+                                    <td>@filteredTransactions.ElementAt(i).Amount</td>
+                                    <td>@filteredTransactions.ElementAt(i).TransactionDate.ToString("dd/MM/yyy")</td>
+                                    <td><button class="btn btn-primary" @onclick="() => PageService.DeleteRow(id)">Delete</button></td>
+                                </tr>
+                            }
+
+                        }
+                    }
+                }
+            </tbody>
+        </MudSimpleTable>
+
+    }
+    else
+    {
+        <MudPaper>
+
+            <MudTextField @bind-Value="familyName" Label="Family Name" />
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@AddFamily">Add Family</MudButton>
+            <MudTextField @bind-Value="FamilyId" Label="Family ID" />
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@JoinFamily">Join Family</MudButton>
+
+        </MudPaper>
+    }
 </div>
 
 
 
 @code {
+    String familyName;
+    int FamilyId;
 
-    public async void create()
+
+    DateTime? dateFilterFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+    DateTime? dateFilterTo = DateTime.Today;
+
+    string[] headings = { "Item", "Category", "Amount", "Date" };
+
+    protected override async Task OnInitializedAsync()
     {
-        await familyService.CreateFamily("Gailiai");
+        familyService.FamilyChanged += ((source, args) => { Console.WriteLine("Changed"); StateHasChanged(); });
+        await familyService.GetFamily();
+        await familyService.GetFamilyTransactions();
+        await familyService.GetFamilyMembers();
     }
 
+    public async void AddFamily()
+    {
+        await familyService.CreateFamily(familyName);
+    }
+
+    public async void JoinFamily()
+    {
+        await familyService.JoinFamily(FamilyId);
+        NavigationManager.NavigateTo("/family", true);
+    }
+
+    public async Task Transfer(int id)
+    {
+        var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+        var parameters = new DialogParameters();
+
+        parameters.Add("ButtonText", "Send");
+        parameters.Add("Color", Color.Primary);
+        parameters.Add("recieverId", id);
+
+        var dialog = DialogService.Show<TransferDialog>("Transfer", parameters, options);
+
+        var result = await dialog.Result;
+
+    }
 }

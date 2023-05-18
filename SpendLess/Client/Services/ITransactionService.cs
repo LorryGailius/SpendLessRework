@@ -28,6 +28,7 @@ namespace SpendLess.Client.Services
 
         Task<string> DeleteTransaction(int id);
 
+        Task AddFamilyTransaction(double amount, int recieverId);
         Task GetUserName();
 
         Task GetIsAdmin();

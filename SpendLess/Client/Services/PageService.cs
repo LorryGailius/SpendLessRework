@@ -3,10 +3,12 @@
     public class PageService : IPageService
     {
         private readonly ITransactionService _transactionService;
+        private readonly IFamilyService _familyService;
 
-        public PageService(ITransactionService transactionService)
+        public PageService(ITransactionService transactionService, IFamilyService familyService)
         {
             _transactionService = transactionService;
+            _familyService = familyService;
         }
 
         public async Task<IEnumerable<string>> Search(string value)
@@ -26,6 +28,7 @@
         {
             await _transactionService.DeleteTransaction(id);
             _transactionService.OnTransactionsChanged();
+            _familyService.OnFamilyChanged();
         }
 
         public List<DateTime> GetDates(DateTime date)

@@ -161,5 +161,6 @@
     protected override async Task OnInitializedAsync()
     {
         TransactionService.TransactionsChanged += (source, args) => StateHasChanged();
+        await TransactionService.GetTransactions();
     }
 }

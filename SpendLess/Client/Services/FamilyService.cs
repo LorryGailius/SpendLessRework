@@ -37,6 +37,7 @@ namespace SpendLess.Client.Services
                 if (response.IsSuccessStatusCode)
                 {
                     int id = await response.Content.ReadFromJsonAsync<int>();
+                    Family.Name = name;
                     await this.OnFamilyChanged();
                     _snackBarService.SuccessMsg($"Family is {id}");
                 }

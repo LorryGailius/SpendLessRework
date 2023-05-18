@@ -204,5 +204,15 @@ namespace SpendLess.Server.Services
         {
             return await _context.Families.FirstOrDefaultAsync(f => f.Id == familyId);
         }
+
+        public async Task<User> GetUserById(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task RemoveUser(int userId)
+        {
+            await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.FamilyId = null);
+        }
     }
 }

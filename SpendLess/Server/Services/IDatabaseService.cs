@@ -10,6 +10,7 @@ namespace SpendLess.Server.Services
         Task<bool> FindEmail(string email);
         Task SaveChangesAsync();
         Task AddTransaction(Transactions transaction);
+        Task<User> GetUserById(int id);
         Task<User> GetUser(string email);
         Task<List<Transactions>> GetTransactionsAsync(int userId);
         Task<List<Transactions>> GetTransactionsAsync(int userId, int familyId);
@@ -29,5 +30,6 @@ namespace SpendLess.Server.Services
         Task ChangePermissions(int userId, int permission);
         Task<String> GetFamilyName(int familyId);
         Task<Family> GetFamily(int familyId);
+        Task RemoveUser(int userId);
     }
 }

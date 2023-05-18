@@ -12,13 +12,16 @@ namespace SpendLess.Server.Services
             _databaseService = databaseService;
         }
 
-        public async Task ChangeDisplayName(String name, SpendLessContext _context, HttpContext _httpContext)
+        public async Task ChangeDisplayName(int userId, String name, SpendLessContext _context, HttpContext _httpContext)
         {
             var user = await GetUser(_context, _httpContext);
 
             if (user == null) { return; }
 
-            await _databaseService.ChangeDisplayName(user.Id, name);
+            if(user.Permission == 2)
+            {
+                await _databaseService.ChangeDisplayName(userId, name);
+            }
         }
 
         public async Task ChangePermissions(int userId, int permission, SpendLessContext _context, HttpContext _httpContext)

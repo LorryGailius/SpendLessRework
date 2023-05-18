@@ -19,7 +19,6 @@ namespace SpendLess.Server.Controllers
             _service = service;
         }
 
-
         [HttpGet("GetFamilyTransactions")]
         public async Task<ActionResult<List<Transactions>>> GetFamilyTransactions() =>
             await _service.GetTransactions(_context, HttpContext);
@@ -32,9 +31,9 @@ namespace SpendLess.Server.Controllers
         public async Task<ActionResult<Family>> GetFamily() =>
             await _service.GetFamily(_context, HttpContext);
 
-        [HttpPost("ChangeUsername/{name}")]
-        public async Task ChangeUsername(string name) =>
-            await _service.ChangeDisplayName(name, _context, HttpContext);
+        [HttpPost("ChangeUsername/{userId}/{name}")]
+        public async Task ChangeUsername(int userId, string name) =>
+            await _service.ChangeDisplayName(userId, name, _context, HttpContext);
 
         [HttpPost("CreateFamily")]
         public async Task<ActionResult<int?>> AddGroup([FromBody] Family? f) =>

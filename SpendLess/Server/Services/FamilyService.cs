@@ -34,7 +34,7 @@ namespace SpendLess.Server.Services
             return family.Id;
         }
 
-        public async Task<List<User>> GetFamilyMembers(SpendLessContext _context, HttpContext _httpContext)
+        public async Task<List<UserDto>> GetFamilyMembers(SpendLessContext _context, HttpContext _httpContext)
         {
             var user = await GetUser(_context, _httpContext);
 
@@ -42,10 +42,23 @@ namespace SpendLess.Server.Services
 
             if (user.FamilyId != null)
             {
-                familyMembers = await _databaseService.GetFamilyMembers(user.Id);
+                familyMembers = await _databaseService.GetFamilyMembers((int)user.FamilyId, user.Id);
             }
 
-            return familyMembers;
+            List<UserDto> userDtos = new List<UserDto>();
+
+            foreach (var familyMember in familyMembers)
+            {
+                userDtos.Add(new UserDto
+                {
+                    Username = familyMember.Username,
+                    Email = familyMember.Email,
+                    Balance = (double)familyMember.InitialBalance,
+                    Id = familyMember.Id,
+                });
+            }
+
+            return userDtos;
         }
 
         public async Task<List<Transactions>> GetTransactions(SpendLessContext _context, HttpContext _httpContext)
@@ -59,19 +72,21 @@ namespace SpendLess.Server.Services
                 transactions = await _databaseService.GetTransactionsAsync(user.Id, (int)user.FamilyId);
             }
 
-
             return transactions;
 
         }
 
-        public async Task JoinFamily(int familyId, SpendLessContext _context, HttpContext _httpContext)
+        public async Task<bool> JoinFamily(int familyId, SpendLessContext _context, HttpContext _httpContext)
         {
             var user = await GetUser(_context, _httpContext);
 
             if (user != null)
             {
                 await _databaseService.JoinFamily(user.Id, familyId);
+                return true;
             }
+
+            return false;
         }
 
 
@@ -85,5 +100,22 @@ namespace SpendLess.Server.Services
             return user;
         }
 
+        public async Task<Family> GetFamily(SpendLessContext _context, HttpContext _httpContext)
+        {
+            var user = await GetUser(_context, _httpContext);
+            Family family = null;
+
+            if (user.FamilyId != null)
+            {
+                family = await _databaseService.GetFamily((int)user.FamilyId);
+            }
+
+            if(family is null)
+            {
+                family = new Family("-2");
+            }
+
+            return family;
+        }
     }
 }

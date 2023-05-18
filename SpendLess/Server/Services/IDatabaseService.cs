@@ -22,10 +22,12 @@ namespace SpendLess.Server.Services
         Task<List<Message>> GetMessagesAsync(int id);
         Task AddMessage(String message, int id, int senderId);
         Task AddMessage(Message MessageObj);
-        Task<List<User>> GetFamilyMembers(int familyId);
+        Task<List<User>> GetFamilyMembers(int familyId, int userId);
         Task CreateGroup(Family family, int userId);
         Task ChangeDisplayName(int userId, string displayName);
         Task JoinFamily(int userId, int familyId);
         Task ChangePermissions(int userId, int permission);
+        Task<String> GetFamilyName(int familyId);
+        Task<Family> GetFamily(int familyId);
     }
 }

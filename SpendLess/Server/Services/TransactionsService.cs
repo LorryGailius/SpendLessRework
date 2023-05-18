@@ -26,6 +26,7 @@ namespace SpendLess.Server.Services
             var user = await GetUser(_context, _httpContext);
 
             transaction.UserId = user.Id;
+            transaction.FamilyId = user.FamilyId;
 
             await _databaseService.AddTransaction(transaction);
             await _databaseService.SaveChangesAsync();
@@ -143,11 +144,6 @@ namespace SpendLess.Server.Services
             var result = _databaseService.GetMessagesAsync(id);
             var messages = result.Result;
             return messages;
-        }
-
-        public Task<List<User>> GetGroupUsers(SpendLessContext _context, HttpContext _httpContext)
-        {
-            throw new NotImplementedException();
         }
     }
 }

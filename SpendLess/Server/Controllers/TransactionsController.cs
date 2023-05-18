@@ -14,13 +14,11 @@ namespace SpendLess.Server.Controllers
     {
         private readonly SpendLessContext _context;
         private readonly ITransactionsService _service;
-        private readonly IFamilyService _familyService;
 
-        public TransactionsController(SpendLessContext context, ITransactionsService service, IFamilyService familyService)
+        public TransactionsController(SpendLessContext context, ITransactionsService service)
         {
             _context = context;
             _service = service;
-            _familyService = familyService;
         }
 
         [HttpGet("GetTransactions")]
@@ -64,30 +62,5 @@ namespace SpendLess.Server.Controllers
         [HttpDelete("ResolveTicket/{id}")]
         public async Task ResolveTicket(int id) =>
             await _service.ResolveTicket(id, _context, HttpContext);
-
-        [HttpGet("GetFamilyTransactions")]
-        public async Task<ActionResult<List<Transactions>>> GetFamilyTransactions() =>
-            await _familyService.GetTransactions(_context, HttpContext);
-
-        [HttpGet("GetFamily")]
-        public async Task<ActionResult<List<User>>> GetFamilyGoals() =>
-            await _familyService.GetFamilyMembers(_context, HttpContext);
-
-        [HttpPost("ChangeUsername/{name}")]
-        public async Task ChangeUsername(string name) =>
-            await _familyService.ChangeDisplayName(name, _context, HttpContext);
-
-        [HttpPost("AddGroup")]
-        public async Task<ActionResult<int?>> AddGroup([FromBody] Family? f) =>
-            await _familyService.CreateFamily(f, _context, HttpContext);
-
-        [HttpPost("Join/{id}")]
-        public async Task Join(int id) =>
-            await _familyService.JoinFamily(id, _context, HttpContext);
-
-        [HttpPost("ChangePermission/{id}/{permission}")]
-        public async Task ChangePermission(int id, int permission) =>
-            await _familyService.ChangePermissions(id, permission, _context, HttpContext);
-
     }
 }

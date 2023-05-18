@@ -213,6 +213,7 @@ namespace SpendLess.Server.Services
         public async Task RemoveUser(int userId)
         {
             await _context.Users.Where(u => u.Id == userId).ForEachAsync(u => u.FamilyId = null);
+            await SaveChangesAsync();
         }
     }
 }

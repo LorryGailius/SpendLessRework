@@ -244,5 +244,31 @@ namespace SpendLess.Client.Services
                 throw;
             }
         }
+
+        public async Task KickUser(int id)
+        {
+            var client = _clientFactory.CreateClient();
+
+            try
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7290/api/Family/Kick/{id}");
+                string token = await _localStorage.GetItemAsStringAsync("token");
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
+
+                var response = await client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
+
+                if (response.IsSuccessStatusCode && response.Content != null)
+                {
+                    var user = Users.FirstOrDefault(u => u.Id == id);
+                    Users.Remove(user);
+                    await this.OnFamilyChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
+            }
+        }
     }
 }

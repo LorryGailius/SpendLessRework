@@ -133,7 +133,7 @@ namespace SpendLess.Server.Services
             var user = await GetUser(context, _httpContext);
             if (user.Permission == 2)
             {
-                await _databaseService.ChangePermissions(userId, 0);
+                await _databaseService.RemoveUser(userId);
             }
         }
     }

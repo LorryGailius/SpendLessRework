@@ -33,7 +33,7 @@
                                     @if (familyService.Permission == 2)
                                     {
                                         <MudMenuItem OnClick="() => Transfer(member.Id, true)">Change nickname</MudMenuItem>
-                                        <MudMenuItem OnClick="() => Transfer(member.Id)">Kick</MudMenuItem>
+                                        <MudMenuItem OnClick="() => Kick(member.Id)">Kick</MudMenuItem>
                                     }
                                 </MudMenu>
                             </div>
@@ -186,5 +186,10 @@
 
             var result = await dialog.Result;
         }
+    }
+
+    public async void Kick(int id)
+    {
+        await familyService.KickUser(id);
     }
 }

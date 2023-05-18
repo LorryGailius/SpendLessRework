@@ -9,7 +9,6 @@ namespace SpendLess.Client.Services
         public Family Family { get; set; }
         public List<UserDto> Users { get; set; }
         public List<Transactions> FamilyTransactions { get; set; }
-
         public int Permission { get; set; }
         public event EventHandler<EventArgs>? FamilyChanged;
         public Task JoinFamily(int familyId);
@@ -18,5 +17,6 @@ namespace SpendLess.Client.Services
         public Task OnFamilyChanged();
         public Task GetPermission();
         public Task ChangeUsername(int id, string newUsername);
+        public Task KickUser(int id);
     }
 }

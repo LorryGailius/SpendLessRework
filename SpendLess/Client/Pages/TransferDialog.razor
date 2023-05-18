@@ -1,9 +1,17 @@
 ﻿@using SpendLess.Client.Services;
 @inject ITransactionService TransactionService
+@inject IFamilyService FamilyService;
 
 <MudDialog>
     <DialogContent>
-        <MudTextField Label="Amount" @bind-Value=Amount/>
+        @if (isNick)
+        {
+            <MudTextField Label="Amount" @bind-Value=newNick />
+        }
+        else
+        {
+            <MudTextField Label="Amount" @bind-Value=Amount />
+        }
     </DialogContent>
 
 
@@ -24,18 +32,29 @@
     [Parameter] public String ButtonText { get; set; }
     [Parameter] public Color Color { get; set; }
     [Parameter] public int recieverId { get; set; }
+    [Parameter] public bool isNick { get; set; }
+
+    public string newNick { get; set; } = "";
 
     public int Amount { get; set; }
     void Cancel() => MudDialog.Cancel();
 
     public async Task Submit()
     {
-        if(Amount > 0)
+        if(isNick)
         {
-            Console.WriteLine("Amount is " + Amount);
+            await FamilyService.ChangeUsername(recieverId, newNick);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
+
+        if (Amount > 0)
+        {
             await TransactionService.AddFamilyTransaction(Amount, recieverId);
             MudDialog.Close(DialogResult.Ok(true));
         }
     }
+
+
 
 }

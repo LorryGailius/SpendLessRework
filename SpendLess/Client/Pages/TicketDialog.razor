@@ -3,12 +3,12 @@
 @inject ITransactionService TransactionService
 @inject ITicketService TicketService
 
+
 <MudDialog>
     <DialogContent>
 
         @if (IsForm)
         {
-
             <MudTextField Placeholder="Title" @bind-Value="@ticketObject.Title" Variant="Variant.Outlined" Required="true" RequiredError="Title is required!" Style="margin: 2rem 2rem; padding:inherit;"></MudTextField>
 
             <MudTextField Lines="10" Label="Description" @bind-Value="@ticketObject.Description" Variant="Variant.Outlined" Placeholder="Please explain your problem in as much detail as possible" Style="margin: 2rem 2rem;"></MudTextField>

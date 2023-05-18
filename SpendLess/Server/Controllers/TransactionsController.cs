@@ -30,6 +30,11 @@ namespace SpendLess.Server.Controllers
         public async Task<ActionResult<int?>> AddTransaction([FromBody] Transactions? transaction) =>
             await _service.AddTransaction(transaction, _context, HttpContext);
 
+        [HttpPost("AddFamTransaction/{id}")]
+        [LimitRequests(MaxRequests = 1, TimeWindow = 1)]
+        public async Task<ActionResult<Transactions?>> AddFamTransaction([FromBody] Transactions? transaction, int id) =>
+            await _service.AddFamilyTransaction(transaction, id,  _context, HttpContext);
+
         [HttpPost("AddPeriodicTransaction")]
         public async Task<ActionResult<List<Transactions?>>> AddPeriodicTransaction([FromBody] List<Transactions?> transactions) =>
             await _service.AddPeriodicTransaction(transactions, _context, HttpContext);

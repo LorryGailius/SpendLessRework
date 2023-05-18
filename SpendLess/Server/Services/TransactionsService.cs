@@ -33,6 +33,32 @@ namespace SpendLess.Server.Services
             return transaction.Id;
         }
 
+        public async Task<Transactions?> AddFamilyTransaction(Transactions? transaction, int recieverId, SpendLessContext _context, HttpContext _httpContext)
+        {
+            var user = await GetUser(_context, _httpContext);
+            var reciever = await _databaseService.GetUserById(recieverId);
+
+            var fam = transaction;
+
+            transaction.UserId = recieverId;
+            transaction.Comment = $"Money transfer from {user.Username}";
+
+            await _databaseService.AddTransaction(transaction);
+
+            await _databaseService.SaveChangesAsync();
+
+            fam.Id = null;
+            fam.UserId = user.Id;
+            fam.Comment = $"Money transfer to {reciever.Username}";
+            fam.Amount = -fam.Amount;
+
+            await _databaseService.AddTransaction(fam);
+
+            await _databaseService.SaveChangesAsync();
+
+            return fam;
+        }
+
         public async Task<List<Transactions?>> AddPeriodicTransaction(List<Transactions> transactions, SpendLessContext _context, HttpContext _httpContext)
         {
             var user = await GetUser(_context, _httpContext);

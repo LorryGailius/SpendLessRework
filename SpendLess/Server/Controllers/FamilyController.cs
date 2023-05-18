@@ -47,5 +47,13 @@ namespace SpendLess.Server.Controllers
         [HttpPost("ChangePermission/{id}/{permission}")]
         public async Task ChangePermission(int id, int permission) =>
             await _service.ChangePermissions(id, permission, _context, HttpContext);
+
+        [HttpGet("GetPermission")]
+        public async Task<ActionResult<int>> GetPermission() =>
+            await _service.GetPermission(_context, HttpContext);
+
+        [HttpPost("Kick/{id}")]
+        public async Task Kick(int id) =>
+            await _service.Kick(id, _context, HttpContext);
     }
 }

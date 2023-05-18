@@ -117,5 +117,21 @@ namespace SpendLess.Server.Services
 
             return family;
         }
+
+        public async Task<int> GetPermission(SpendLessContext context, HttpContext _httpContext)
+        {
+            var user = await GetUser(context, _httpContext);
+
+            return (int)user.Permission;
+        }
+
+        public async Task Kick(int userId, SpendLessContext context, HttpContext _httpContext)
+        {
+            var user = await GetUser(context, _httpContext);
+            if (user.Permission == 2)
+            {
+                await _databaseService.ChangePermissions(userId, 0);
+            }
+        }
     }
 }

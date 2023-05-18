@@ -62,6 +62,6 @@
         Income, Housing, Transportation, Food, Utilities, Investing,
         Household, Personal, Gifts,
         Entertainment, Healthcare, Insurance, Kids,
-        Pets, Subscriptions, Clothing, Travel, Technology
+        Pets, Subscriptions, Clothing, Travel, Technology, Family
     }
 }

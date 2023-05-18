@@ -20,6 +20,10 @@ namespace SpendLess.Shared
             this.Name = name;
             this.Balance = balance;
         }
+        public Family(string name)
+        {
+            this.Name = name;
+        }
 
         public Family()
         {

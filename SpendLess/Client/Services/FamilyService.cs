@@ -16,9 +16,9 @@ namespace SpendLess.Client.Services
         public event EventHandler<EventArgs>? FamilyChanged;
 
         public Family Family { get; set; } = new Family("-1");
-
+        public int Permission { get; set; } = 1;
         public List<UserDto> Users { get; set; }
-        public List<Transactions> FamilyTransactions { get; set; }
+        public List<Transactions> FamilyTransactions { get; set; } = new List<Transactions>();
 
         public async Task CreateFamily(string name)
         {
@@ -41,9 +41,10 @@ namespace SpendLess.Client.Services
                     _snackBarService.SuccessMsg($"Family is {id}");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
+                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
             }
         }
 
@@ -59,11 +60,10 @@ namespace SpendLess.Client.Services
 
                 var response = await client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
 
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Got fmaily");
 
-                    if(response.Content != null)
+                    if (response.Content != null)
                     {
                         var result = await response.Content.ReadFromJsonAsync<Family>();
                         Family = result;
@@ -87,7 +87,6 @@ namespace SpendLess.Client.Services
             try
             {
                 string token = await _localStorage.GetItemAsStringAsync("token");
-                Console.WriteLine("Joining");
                 client.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
 
@@ -97,11 +96,10 @@ namespace SpendLess.Client.Services
 
                 if (response.IsSuccessStatusCode && response.Content != null)
                 {
-                    Console.WriteLine(response.Content.ReadFromJsonAsync<bool>());
                     await this.OnFamilyChanged();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
                 throw;
@@ -113,7 +111,7 @@ namespace SpendLess.Client.Services
         {
             var client = _clientFactory.CreateClient();
 
-            if(Family.Name != "-1")
+            if (Family.Name != "-1")
             {
                 try
                 {
@@ -125,24 +123,15 @@ namespace SpendLess.Client.Services
 
                     if (response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Got fmaily members");
 
                         if (response.Content != null)
                         {
                             var result = await response.Content.ReadFromJsonAsync<List<UserDto>>();
                             Users = result;
-
-
-                            foreach (var member in Users)
-                            {
-                                Console.WriteLine($"{member.Username}");
-                            }
-
-                            Console.WriteLine("Finished printing");
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
                     throw;
@@ -171,7 +160,7 @@ namespace SpendLess.Client.Services
             var client = _clientFactory.CreateClient();
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetTransactions");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Family/GetFamilyTransactions");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -184,18 +173,76 @@ namespace SpendLess.Client.Services
                 }
                 if (response.IsSuccessStatusCode)
                 {
-                   var result = await response.Content.ReadFromJsonAsync<List<Transactions>>();
-                   FamilyTransactions = result;
+                    var result = await response.Content.ReadFromJsonAsync<List<Transactions>>();
+                    FamilyTransactions = result;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
                 throw;
             }
 
             await this.OnFamilyChanged();
+        }
+
+
+        public async Task GetPermission()
+        {
+            var client = _clientFactory.CreateClient();
+
+            try
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Family/GetPermission");
+                string token = await _localStorage.GetItemAsStringAsync("token");
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
+
+                var response = await client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    if (response.Content != null)
+                    {
+                        var result = await response.Content.ReadFromJsonAsync<int>();
+                        Permission = result;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
+            }
+
+            await this.OnFamilyChanged();
+        }
+
+        public async Task ChangeUsername(int id, string newUsername)
+        {
+            var client = _clientFactory.CreateClient();
+
+            try
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7290/api/Family/ChangeUsername/{id}/{newUsername}");
+                string token = await _localStorage.GetItemAsStringAsync("token");
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
+
+                var response = await client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
+
+                if (response.IsSuccessStatusCode && response.Content != null)
+                {
+                    var user = Users.FirstOrDefault(u => u.Id == id);
+                    user.Username = newUsername;
+                    await this.OnFamilyChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                throw;
+            }
         }
     }
 }

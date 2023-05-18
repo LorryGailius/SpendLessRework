@@ -110,6 +110,7 @@ namespace SpendLess.Client.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<List<Transactions>>();
+                    
                     Transactions = result;
                 }              
             }
@@ -202,11 +203,14 @@ namespace SpendLess.Client.Services
                 _httpClient.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
 
-                var userTransaction = new Transactions(null, amount, "Family", DateTime.Now, "Transfer to family member");
-                var response = await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Transactions/AddTransaction", userTransaction);
+                var userTransaction = new Transactions(null, amount, "Family", DateTime.Now.Date, "Transfer to family member");
+                userTransaction.UserId = recieverId;
+                Console.WriteLine(recieverId + " " + userTransaction.UserId);
+                var response = await _httpClient.PostAsJsonAsync($"https://localhost:7290/api/Transactions/AddFamTransaction/{recieverId}", userTransaction);
                 if (response.IsSuccessStatusCode)
                 {
-                    var id = await response.Content.ReadFromJsonAsync<int>();
+                    var saved = await response.Content.ReadFromJsonAsync<Transactions>();
+                    Transactions.Add(saved);
                 }
                 else if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 {
@@ -224,6 +228,8 @@ namespace SpendLess.Client.Services
                 await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
                 throw;
             }
+
+            await this.OnTransactionsChanged();
         }
 
         public async Task AddPeriodicTransaction(double? amount, string category, DateTime date, string comment, string period, int interval, DateTime? endDate)

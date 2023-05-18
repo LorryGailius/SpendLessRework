@@ -17,29 +17,38 @@
     {
         <MudPaper Width="50%" style="position:fixed;top:0;margin: 2rem 0;">
             <MudText Typo="Typo.h1" Align="Align.Center">@familyService.Family.Name</MudText>
-
-            @if (familyService.Users is not null)
-            {
-                @foreach (var member in familyService.Users)
+            <div style="margin: 1rem;">
+                @if (familyService.Users is not null)
                 {
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center;">
-                            <MudAvatar Color="Color.Primary" style="margin: 0 1rem">@member.Username[0]</MudAvatar>
-                            <MudText Typo="Typo.h6">@member.Username</MudText>
+                    @foreach (var member in familyService.Users)
+                    {
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center;">
+                                <MudAvatar Color="Color.Primary" style="margin: 0 1rem">@member.Username[0]</MudAvatar>
+                                <MudText Typo="Typo.h6">@member.Username</MudText>
+                            </div>
+                            <div style="margin-left: auto; display:flex; align-items:center">
+                                <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+                                    <MudMenuItem OnClick="() => Transfer(member.Id)">Send money</MudMenuItem>
+                                    @if (familyService.Permission == 2)
+                                    {
+                                        <MudMenuItem OnClick="() => Transfer(member.Id, true)">Change nickname</MudMenuItem>
+                                        <MudMenuItem OnClick="() => Transfer(member.Id)">Kick</MudMenuItem>
+                                    }
+                                </MudMenu>
+                            </div>
                         </div>
-                        <div style="margin-left: auto; display:flex; align-items:center">
-                            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
-                            <MudMenuItem OnClick="() => Transfer(member.Id)">Send money</MudMenuItem>
-                            </MudMenu>
-                        </div>
-                    </div>
 
-                    <MudDivider style="margin: 0.25rem 0" />
+                        @if (familyService.Users.Count > 1)
+                        {
+                            <MudDivider style="margin: 0.25rem 0" />
+                        }
+                    }
                 }
-            }
+            </div>
         </MudPaper>
 
-        <MudSimpleTable Dense="false" Hover="true" Bordered="false" Striped="false" Style="overflow-x: auto; width: 100%">
+        <MudSimpleTable Dense="false" Hover="true" Bordered="false" Striped="false" Style="overflow-x: auto; width: 80%; margin-top: -10rem;">
             <thead>
                 <tr>
                     <th></th>
@@ -63,7 +72,7 @@
             </thead>
             <tbody>
                 @{
-                    if (familyService.FamilyTransactions is not null)
+                    if (familyService.FamilyTransactions is not null && familyService.FamilyTransactions.Count > 0)
                     {
                         List<SpendLess.Shared.Transactions> filteredTransactions = familyService.FamilyTransactions;
 
@@ -84,7 +93,6 @@
                                     <td>@((filteredTransactions.ElementAt(i).Category))</td>
                                     <td>@filteredTransactions.ElementAt(i).Amount</td>
                                     <td>@filteredTransactions.ElementAt(i).TransactionDate.ToString("dd/MM/yyy")</td>
-                                    <td><button class="btn btn-primary" @onclick="() => PageService.DeleteRow(id)">Delete</button></td>
                                 </tr>
                             }
 
@@ -98,12 +106,12 @@
     else
     {
         <MudPaper>
-
-            <MudTextField @bind-Value="familyName" Label="Family Name" />
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@AddFamily">Add Family</MudButton>
-            <MudTextField @bind-Value="FamilyId" Label="Family ID" />
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@JoinFamily">Join Family</MudButton>
-
+            <div style="display: flex; justify-content: center; flex-direction:column; margin: 1rem;">
+                <MudTextField @bind-Value="familyName" Label="Family Name" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@AddFamily" style="margin-bottom: 1rem;">Add Family</MudButton>
+                <MudTextField @bind-Value="FamilyId" Label="Family ID" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@JoinFamily">Join Family</MudButton>
+            </div>
         </MudPaper>
     }
 </div>
@@ -120,12 +128,17 @@
 
     string[] headings = { "Item", "Category", "Amount", "Date" };
 
+    protected override void OnInitialized()
+    {
+        familyService.FamilyChanged += ((source, args) => StateHasChanged());
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        familyService.FamilyChanged += ((source, args) => { Console.WriteLine("Changed"); StateHasChanged(); });
         await familyService.GetFamily();
-        await familyService.GetFamilyTransactions();
         await familyService.GetFamilyMembers();
+        await familyService.GetFamilyTransactions();
+        await familyService.GetPermission();
     }
 
     public async void AddFamily()
@@ -139,19 +152,39 @@
         NavigationManager.NavigateTo("/family", true);
     }
 
-    public async Task Transfer(int id)
+    private string GetUsernameById(int? userId)
     {
-        var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var user = familyService.Users.FirstOrDefault(u => u.Id == userId);
+        Console.WriteLine(user.Username);
+        return user != null ? user.Username : string.Empty;
+    }
 
+    public async Task Transfer(int id, bool isNick = false)
+    {
+
+        var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var parameters = new DialogParameters();
 
-        parameters.Add("ButtonText", "Send");
-        parameters.Add("Color", Color.Primary);
-        parameters.Add("recieverId", id);
+        if (isNick)
+        {
+            parameters.Add("ButtonText", "Change");
+            parameters.Add("Color", Color.Primary);
+            parameters.Add("recieverId", id);
+            parameters.Add("isNick", true);
 
-        var dialog = DialogService.Show<TransferDialog>("Transfer", parameters, options);
+            var dialog = DialogService.Show<TransferDialog>("Change nickname", parameters, options);
 
-        var result = await dialog.Result;
+            var result = await dialog.Result;
+        }
+        else
+        {
+            parameters.Add("ButtonText", "Send");
+            parameters.Add("Color", Color.Primary);
+            parameters.Add("recieverId", id);
 
+            var dialog = DialogService.Show<TransferDialog>("Transfer", parameters, options);
+
+            var result = await dialog.Result;
+        }
     }
 }

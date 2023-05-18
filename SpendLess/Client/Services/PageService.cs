@@ -28,6 +28,7 @@
         {
             await _transactionService.DeleteTransaction(id);
             _transactionService.OnTransactionsChanged();
+            _familyService.FamilyTransactions.RemoveAll(x => x.Id == id);
             _familyService.OnFamilyChanged();
         }
 

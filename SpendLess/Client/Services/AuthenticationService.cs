@@ -84,7 +84,7 @@ namespace SpendLess.Client.Services
             try
             {
                 string serializedUser = JsonConvert.SerializeObject(user);
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7290/api/User/register");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{Constants.ApiUrl}/User/register");
                 requestMessage.Content = new StringContent(serializedUser);
                 requestMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
@@ -112,27 +112,27 @@ namespace SpendLess.Client.Services
             }
             //catch (ArgumentNullException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (NullReferenceException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (InvalidOperationException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (JsonException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -148,7 +148,7 @@ namespace SpendLess.Client.Services
             try
             {
                 string serializedUser = JsonConvert.SerializeObject(user);
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7290/api/User/login");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{Constants.ApiUrl}/User/login");
                 requestMessage.Content = new StringContent(serializedUser);
                 requestMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                 var response = await client.SendAsync(requestMessage);
@@ -175,27 +175,27 @@ namespace SpendLess.Client.Services
             }
             //catch (ArgumentNullException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (NullReferenceException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (InvalidOperationException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (JsonException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 

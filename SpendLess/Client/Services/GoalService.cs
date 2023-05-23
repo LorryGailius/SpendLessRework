@@ -30,7 +30,7 @@ namespace SpendLess.Client.Services
 		{
 			var client = _clientFactory.CreateClient();
 
-			var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Goals/GetGoals");
+			var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Goals/GetGoals");
 			string token = await _localStorage.GetItemAsStringAsync("token");
 			requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -62,7 +62,7 @@ namespace SpendLess.Client.Services
 
 
 				var goal = new Goal(0, userId, name, amount, endDate, currentAmount);
-				var response = await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Goals/AddGoal", goal);
+				var response = await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Goals/AddGoal", goal);
 				if (response.IsSuccessStatusCode)
 				{
 					var id = await response.Content.ReadFromJsonAsync<int>();
@@ -85,22 +85,22 @@ namespace SpendLess.Client.Services
 			}
 			catch (NullReferenceException ex)
 			{
-				await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+				await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
 				throw;
 			}
 			catch (InvalidOperationException ex)
 			{
-				await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+				await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
 				throw;
 			}
 			catch (JsonException ex)
 			{
-				await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+				await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
 				throw;
 			}
 			catch (Exception ex)
 			{
-				await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+				await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
 				throw;
 			}
 		}
@@ -115,7 +115,7 @@ namespace SpendLess.Client.Services
 				_httpClient.DefaultRequestHeaders.Authorization =
 						new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
 
-				var response = await _httpClient.PutAsJsonAsync($"https://localhost:7290/api/Goals/PutGoal", goal);
+				var response = await _httpClient.PutAsJsonAsync($"{Constants.ApiUrl}/Goals/PutGoal", goal);
 
                 if (response.StatusCode == HttpStatusCode.TooManyRequests)
 				{
@@ -128,22 +128,22 @@ namespace SpendLess.Client.Services
 			}
             catch (NullReferenceException ex)
 			{
-                await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
             catch (InvalidOperationException ex)
 			{
-                await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
             catch (JsonException ex)
 			{
-                await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
             catch (Exception ex)
             {
-				await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+				await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }

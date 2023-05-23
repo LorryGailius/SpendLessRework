@@ -33,7 +33,7 @@ namespace SpendLess.Client.Services
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 client.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
-                var response = await client.PostAsJsonAsync("https://localhost:7290/api/Family/CreateFamily", family);
+                var response = await client.PostAsJsonAsync($"{Constants.ApiUrl}/Family/CreateFamily", family);
                 if (response.IsSuccessStatusCode)
                 {
                     int id = await response.Content.ReadFromJsonAsync<int>();
@@ -44,7 +44,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }
@@ -55,7 +55,7 @@ namespace SpendLess.Client.Services
 
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Family/GetFamily");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Family/GetFamily");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -74,7 +74,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -91,7 +91,7 @@ namespace SpendLess.Client.Services
                 client.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
 
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:7290/api/Family/Join/{familyId}");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Family/Join/{familyId}");
 
                 var response = await client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
 
@@ -102,7 +102,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -116,7 +116,7 @@ namespace SpendLess.Client.Services
             {
                 try
                 {
-                    var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Family/GetFamilyMembers");
+                    var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Family/GetFamilyMembers");
                     string token = await _localStorage.GetItemAsStringAsync("token");
                     requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -134,7 +134,7 @@ namespace SpendLess.Client.Services
                 }
                 catch (Exception ex)
                 {
-                    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                     throw;
                 }
 
@@ -161,7 +161,7 @@ namespace SpendLess.Client.Services
             var client = _clientFactory.CreateClient();
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Family/GetFamilyTransactions");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Family/GetFamilyTransactions");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -180,7 +180,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -194,7 +194,7 @@ namespace SpendLess.Client.Services
 
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Family/GetPermission");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Family/GetPermission");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -213,7 +213,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -226,7 +226,7 @@ namespace SpendLess.Client.Services
 
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7290/api/Family/ChangeUsername/{id}/{newUsername}");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{Constants.ApiUrl}/Family/ChangeUsername/{id}/{newUsername}");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -241,7 +241,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }
@@ -252,7 +252,7 @@ namespace SpendLess.Client.Services
 
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7290/api/Family/Kick/{id}");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{Constants.ApiUrl}/Family/Kick/{id}");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -267,7 +267,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }

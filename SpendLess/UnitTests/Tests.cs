@@ -109,7 +109,7 @@ namespace SpendLess.UnitTests
             _transactionServiceGetTransactions = new TransactionService(_clientFactoryTransactionList, _localStorage, _authProviderMock, _snackBarServiceMock.Object);
             _serverAuthServices = new AuthServices(null);
             _clientAuthServices = new AuthenticationService(_clientFactoryLogin, _localStorage, _authProviderMock, _snackBarServiceMock.Object);
-            _pageService = new PageService(_transactionServiceDelete);
+           // _pageService = new PageService(_transactionServiceDelete, );
             _goalService = new GoalService(_clientFactoryLogin, _localStorage, _authProviderMock, _snackBarServiceMock.Object);
 
         }

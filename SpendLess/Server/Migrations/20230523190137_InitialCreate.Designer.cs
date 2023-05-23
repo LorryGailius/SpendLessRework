@@ -12,8 +12,8 @@ using SpendLess.Server.Models;
 namespace SpendLess.Server.Migrations
 {
     [DbContext(typeof(SpendLessContext))]
-    [Migration("20230510200544_initialMigration")]
-    partial class initialMigration
+    [Migration("20230523190137_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -24,7 +24,7 @@ namespace SpendLess.Client.Services
 
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetTicket/" + id);
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Transactions/GetTicket/" + id);
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -47,7 +47,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -62,7 +62,7 @@ namespace SpendLess.Client.Services
 
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetTickets");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Transactions/GetTickets");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -89,7 +89,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -106,7 +106,7 @@ namespace SpendLess.Client.Services
                 client.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
 
-                var response = await client.DeleteAsync($"https://localhost:7290/api/Transactions/ResolveTicket/{ticket.Id}");
+                var response = await client.DeleteAsync($"{Constants.ApiUrl}/Transactions/ResolveTicket/{ticket.Id}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -124,7 +124,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
             await this.OnTicketsChanged();
@@ -138,7 +138,7 @@ namespace SpendLess.Client.Services
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 client.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
-                var response = await client.PostAsJsonAsync("https://localhost:7290/api/Transactions/AddTicket", ticket);
+                var response = await client.PostAsJsonAsync($"{Constants.ApiUrl}/Transactions/AddTicket", ticket);
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Succresss");
@@ -151,7 +151,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
             await this.OnTicketsChanged();

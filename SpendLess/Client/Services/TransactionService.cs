@@ -97,7 +97,7 @@ namespace SpendLess.Client.Services
             var client = _clientFactory.CreateClient();
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetTransactions");                
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Transactions/GetTransactions");                
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -116,21 +116,21 @@ namespace SpendLess.Client.Services
             }
     //        catch (NullReferenceException ex)
     //        {
-				//logException(client, "https://localhost:7290/api/Exception", ex);
+				//logException(client, $"{Constants.ApiUrl}/Exception", ex);
 				//throw;
     //        }
     //        catch (InvalidOperationException ex)
     //        {
-    //            logException(client, "https://localhost:7290/api/Exception", ex);
+    //            logException(client, $"{Constants.ApiUrl}/Exception", ex);
     //            throw;
     //        }
     //        catch (JsonException ex)
     //        {
-    //            logException(client, "https://localhost:7290/api/Exception", ex);
+    //            logException(client, $"{Constants.ApiUrl}/Exception", ex);
     //            throw;
     //        }
             catch (Exception ex){
-                logException(client, "https://localhost:7290/api/Exception", ex);
+                logException(client, $"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -156,7 +156,7 @@ namespace SpendLess.Client.Services
 
 
                 var transaction = new Transactions(null, amount, category, date, comment);
-                var response = await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Transactions/AddTransaction", transaction);             
+                var response = await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Transactions/AddTransaction", transaction);             
                 if (response.IsSuccessStatusCode)
                 {
                     var id = await response.Content.ReadFromJsonAsync<int>();
@@ -175,21 +175,21 @@ namespace SpendLess.Client.Services
             }
             //catch(NullReferenceException ex)
             //{
-            //    await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (InvalidOperationException ex)
             //{
-            //    await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch(JsonException ex)
             //{
-            //    await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             catch(Exception ex){
-                await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }
@@ -206,7 +206,7 @@ namespace SpendLess.Client.Services
                 var userTransaction = new Transactions(null, amount, "Family", DateTime.Now.Date, "Transfer to family member");
                 userTransaction.UserId = recieverId;
                 Console.WriteLine(recieverId + " " + userTransaction.UserId);
-                var response = await _httpClient.PostAsJsonAsync($"https://localhost:7290/api/Transactions/AddFamTransaction/{recieverId}", userTransaction);
+                var response = await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Transactions/AddFamTransaction/{recieverId}", userTransaction);
                 if (response.IsSuccessStatusCode)
                 {
                     var saved = await response.Content.ReadFromJsonAsync<Transactions>();
@@ -225,7 +225,7 @@ namespace SpendLess.Client.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
 
@@ -270,7 +270,7 @@ namespace SpendLess.Client.Services
                     }
                 }
 
-                var response = await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Transactions/AddPeriodicTransaction", transactions);
+                var response = await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Transactions/AddPeriodicTransaction", transactions);
                 var transactionsID = await response.Content.ReadFromJsonAsync<List<Transactions?>>();
 
                 if (response.IsSuccessStatusCode)
@@ -284,21 +284,21 @@ namespace SpendLess.Client.Services
             }
             //catch (InvalidOperationException ex)
             //{
-            //    await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (JsonException ex)
             //{
-            //    await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch(ArgumentException ex)
             //{
-            //    await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             catch (Exception ex){
-                await _httpClient.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await _httpClient.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }
@@ -312,7 +312,7 @@ namespace SpendLess.Client.Services
                 _httpClient.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
 
-                var response = await _httpClient.DeleteAsync($"https://localhost:7290/api/Transactions/{id}");
+                var response = await _httpClient.DeleteAsync($"{Constants.ApiUrl}/Transactions/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     _snackBarService.SuccessMsg("Transaction was successfully deleted");
@@ -360,7 +360,7 @@ namespace SpendLess.Client.Services
             var client = _clientFactory.CreateClient();
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetTransactions");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Transactions/GetTransactions");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -378,21 +378,21 @@ namespace SpendLess.Client.Services
             }
             //catch (NullReferenceException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (InvalidOperationException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             //catch (JsonException ex)
             //{
-            //    await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+            //    await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
             //    throw;
             //}
             catch (Exception ex) {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
             /*var _httpClient = clientFactory.CreateClient();
@@ -410,7 +410,7 @@ namespace SpendLess.Client.Services
             var client = _clientFactory.CreateClient();
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetUser");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Transactions/GetUser");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -428,7 +428,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }
@@ -438,7 +438,7 @@ namespace SpendLess.Client.Services
             var client = _clientFactory.CreateClient();
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7290/api/Transactions/GetUser");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApiUrl}/Transactions/GetUser");
                 string token = await _localStorage.GetItemAsStringAsync("token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token.Replace("\"", ""));
 
@@ -456,7 +456,7 @@ namespace SpendLess.Client.Services
             }
             catch (Exception ex)
             {
-                await client.PostAsJsonAsync("https://localhost:7290/api/Exception", ex);
+                await client.PostAsJsonAsync($"{Constants.ApiUrl}/Exception", ex);
                 throw;
             }
         }

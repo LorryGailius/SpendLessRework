@@ -11,6 +11,6 @@ namespace SpendLess.Shared
         // Use domain name in production
         // Use localhost:7290 in development
 
-        public static string ApiUrl = "https://localhost:7290/api";
+        public static string ApiUrl = "https://spendless.azurewebsites.net/api";
     }
 }

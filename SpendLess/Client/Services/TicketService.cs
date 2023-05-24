@@ -115,7 +115,7 @@ namespace SpendLess.Client.Services
 
                     // Send resolve signal to support hub
                     HubConnection hubConnection = new HubConnectionBuilder()
-                                                        .WithUrl("https://localhost:7290/supporthub")
+                                                        .WithUrl($"{Constants.ApiUrl.Substring(0, Constants.ApiUrl.LastIndexOf("/api"))}/supporthub")
                                                         .Build();
 
                     await hubConnection.StartAsync();

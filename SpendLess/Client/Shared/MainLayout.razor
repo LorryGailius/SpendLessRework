@@ -78,6 +78,9 @@
     {
         TransactionService.TransactionsChanged += ((source, args) => StateHasChanged());
         TransactionService.PrivelagesChanged += ((source, args) => StateHasChanged());
+
+        System.Console.WriteLine(Environment.GetEnvironmentVariable("Spendless_Connection_String"));
+
         if (await _localStorage.GetItemAsStringAsync("token") is not null)
         {
             await TransactionService.GetTransactions(logExceptions);
